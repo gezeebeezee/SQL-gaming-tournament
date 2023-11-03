@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Sponsors</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive,nofollow" />
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <header>
+        <h1>Sponsors</h1>
+    </header>
+    <nav>
+        <a href="index.html"> Home</a>
+        <a href="tournaments.html"> Tournaments</a>
+        <a href ="games.html"> Games</a> 
+        <a href="teams.html"> Teams</a> 
+        <a href="players.html"> Players</a> 
+        <a href="sponsors.html"> Sponsors</a>
+    </nav>
+<main>
+    <h2>Browse Sponsors</h2>
+    <table border =  "2" cellpadding = "5">
+        <tr>
+            <th>ID</th>
+            <th>Sponsor Name</th>
+            <th>Contact Person</th>
+            <th>Contact Email</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Red Bull</td>
+            <td>John Doe</td>
+            <td>johndoe@gmail.com</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Honda</td>
+            <td>Jane Doe</td>
+            <td>janedoe@gmail.com</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Coca-Cola</td>
+            <td>Jack Doe</td>
+            <td>jackdoe@gmail.com</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Chipotle</td>
+            <td>Mary Doe</td>
+            <td>marydoe@gmail.com</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+    </table>
+    <form>
+        <legend><strong>Add Sponsor</strong></legend>
+        <fieldset class="'field">
+            <label>Sponsor Name</label> <input type="text" name="sponsor name">
+            <label>Contact Person</label> <input type="text" name="contact person">
+            <label>Contact Email</label> <input type="text" name="contact email">
+        </fieldset> 
+</main>
+</body>

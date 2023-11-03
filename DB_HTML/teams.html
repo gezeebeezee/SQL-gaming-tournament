@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Teams</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive,nofollow" />
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+<main>
+    <header>
+        <h1>Teams</h1>
+    </header>
+    <nav>
+        <a href="index.html"> Home</a>
+        <a href="tournaments.html"> Tournaments</a>
+        <a href ="games.html"> Games</a> 
+        <a href="teams.html"> Teams</a> 
+        <a href="players.html"> Players</a> 
+        <a href="sponsors.html"> Sponsors</a>
+    </nav>
+    <h2>Browse Teams</h2>
+    <table border =  "2" cellpadding = "5">
+        <tr>
+            <th>ID</th>
+            <th>Team Name</th>
+            <th>Captain</th>
+            <th>Location</th>
+            <th>SponsorID</th>
+            <th>TournamentID</th>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>TSM</td>
+            <td>John Doe</td>
+            <td>USA</td>
+            <td>NULL</td>
+            <td>3</td>
+            <td>Hello from TSM</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>C9</td>
+            <td>Jane Doe</td>
+            <td>Germany</td>
+            <td>4</td>
+            <td>NULL</td>
+            <td>Hello from C9</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Faze</td>
+            <td>Jack Doe</td>
+            <td>Mexico</td>
+            <td>1</td>
+            <td>3</td>
+            <td>Hello from Faze</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>T1</td>
+            <td>Mary Doe</td>
+            <td>South Korea</td>
+            <td>1</td>
+            <td>3</td>
+            <td>Hello from T1</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+    </table>
+    <form>
+        <legend><strong>Add Team</strong></legend>
+        <fieldset class="'field">
+            <label>Team Name</label> <input type="text" name="player name">
+            <label>Captain</label> <select name="captain">
+                <option value="1">John Doe</option>
+                <option value="2">Jane Doe</option>
+                <option value="3">Jack Doe</option>
+                <option value="4">Mary Doe</option>
+            </select>
+            <label>Location</label> <input type="text" name="location">
+            <label>Sponsor</label> <select name="game">
+                <option value="NULL">None</option>
+                <option value="1">Red Bull</option>
+                <option value="2">Honda</option>
+                <option value="3">Coca-Cola</option>
+                <option value="4">Chipotle</option>
+            </select>
+            <label>Registered Tournament</label> <select name="tournament">
+                <option value="1">Momocon</option>
+                <option value="2">Dreamhack</option>
+                <option value="3">E3</option>
+                <option value="4">DragonCon</option>
+            </select>
+        </fieldset>
+    </form> 
+</main>
+</body>

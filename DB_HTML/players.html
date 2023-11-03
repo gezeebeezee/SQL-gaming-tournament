@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Players</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive,nofollow" />
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <header>
+        <h1>Players</h1>
+    </header>
+    <nav>
+        <a href="index.html"> Home</a>
+        <a href="tournaments.html"> Tournaments</a>
+        <a href ="games.html"> Games</a> 
+        <a href="teams.html"> Teams</a> 
+        <a href="players.html"> Players</a> 
+        <a href="sponsors.html"> Sponsors</a>
+    </nav>
+<main>
+    <h2>Browse Players</h2>
+    <table border =  "2" cellpadding = "5">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Birth Date</th>
+            <th>TeamID</th>
+            <th>GameID</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>John Doe</td>
+            <td>User1</td>
+            <td>2000-01-01</td>
+            <td>NULL</td>
+            <td>3</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Jane Doe</td>
+            <td>team1user2</td>
+            <td>1999-02-02</td>
+            <td>1</td>
+            <td>NULL</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Jack Doe</td>
+            <td>team2user2</td>
+            <td>1997-03-07</td>
+            <td>2</td>
+            <td>4</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Mary Doe</td>
+            <td>teama4user1</td>
+            <td>2000-03-09</td>
+            <td>4</td>
+            <td>2</td>
+            <td><a href='#' onClick="showform('update')">Edit</a></td>
+            <td><a href='#' onClick="showform('delete')">Delete</a></td>
+        </tr>
+    </table>
+    <form>
+        <legend><strong>Add Player</strong></legend>
+        <fieldset class="'field">
+            <label>Player Name</label> <input type="text" name="player name">
+            <label>Username</label> <input type="text" name="username">
+            <label>Birthdate</label> <input type="date" name="birth date">
+            <label>Team</label> <select name="team">
+                <option value="NULL">None</option>
+                <option value="1">TSM</option>
+                <option value="2">C9</option>
+                <option value="3">Faze</option>
+                <option value="4">T1</option>
+            </select>
+            <label>Preferred Game</label> <select name="game">
+                <option value="1">League of Legends</option>
+                <option value="2">Valorant</option>
+                <option value="3">Super Smas Bros</option>
+                <option value="4">Yu-Gi-Oh</option>
+            </select>
+        </fieldset>
+        <input class="btn" type="submit" id="addPlayer" value="Add Player">
+    </form>
+    <form>
+        <legend><strong>Edit Player</strong></legend>
+        <fieldset class="'field">
+            <label>Player Name</label> <input type="text" name="player name">
+            <label>Username</label> <input type="text" name="username">
+            <label>Birthdate</label> <input type="date" name="birth date">
+            <label>Team</label> <select name="team">
+                <option value="NULL">None</option>
+                <option value="1">TSM</option>
+                <option value="2">C9</option>
+                <option value="3">Faze</option>
+                <option value="4">T1</option>
+            </select>
+            <label>Preferred Game</label> <select name="game">
+                <option value="1">League of Legends</option>
+                <option value="2">Valorant</option>
+                <option value="3">Super Smas Bros</option>
+                <option value="4">Yu-Gi-Oh</option>
+            </select>
+        </fieldset>
+        <input class="btn" type="submit" id="updatePlayer" value="Update Player">
+    </form>
+</main>
+</body>
