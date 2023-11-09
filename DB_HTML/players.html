@@ -76,6 +76,7 @@
             <td><a href='#' onClick="showform('delete')">Delete</a></td>
         </tr>
     </table>
+    <input class="btn" type="submit" id="addPlayer" value="Add Player">
 
     <p>&nbsp;</p>
 
@@ -132,5 +133,20 @@
         </fieldset>
         <input class="btn" type="submit" id="updatePlayer" value="Update Player">
     </form>
+
+    <p>&nbsp;</p>
+
+    <form method="POST" id="deletePlayer">
+        <legend><strong>Delete Player</strong></legend>
+        <fieldset class="fields">
+            <p>Are you sure you wish to delete the following?</p>
+            <input type="hidden" name="playerID" id="deleteplayerID" value="1">
+            <label><strong>ID:</strong></label> 1
+              <label> <strong>Name</strong> </label> John Doe
+              
+      </fieldset>
+      <input class="btn" type="submit" id="DeletePlayer" value="Delete Player">
+            <input class="btn" type="button" value="cancel" onClick="browsePeople()">
+    </form> 
 </main>
 </body>

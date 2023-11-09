@@ -93,7 +93,7 @@ CREATE OR REPLACE TABLE Tournaments_has_Games (
   TournamentID int NOT NULL,
   PRIMARY KEY (GameID, TournamentID),
   FOREIGN KEY (GameID) REFERENCES Games(GameID)
-    ON DELETE SET NULL,
+    ON DELETE CASCADE,
   FOREIGN KEY (TournamentID) REFERENCES Tournaments(TournamentID) 
     ON DELETE CASCADE
 );

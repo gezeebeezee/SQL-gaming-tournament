@@ -58,6 +58,8 @@ VALUES (:GameID_from_dropdown_Input, :TournamentID_from_dropdown_Input);
 -- update Player information
 UPDATE Players SET Name = :NameInput, Username = :UsernameInput, Birthdate = :BirthdateInput, TeamID = :TeamID_from_dropdown_Input, GameID = :GameID_from_dropdown_Input WHERE PlayerID = :PlayerID_from_dropdown_Input;
 
+-- update Tournaments_has_Games information
+UPDATE Tournaments_has_Games SET GameID = :GameID_from_dropdown_Input WHERE TournamentID = :TournamentID_from_dropdown_Input;
 
 ----- Delete -----
 -- delete a Player

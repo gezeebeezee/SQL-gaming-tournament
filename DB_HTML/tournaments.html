@@ -71,6 +71,7 @@
             <td><a href='#' onClick="showform('delete')">Delete</a></td>
         </tr>
     </table>
+    <input class="btn" type="submit" id="addTournament" value="Add Tournament">
 
     <p>&nbsp;</p>
 
@@ -117,6 +118,7 @@
             <td><a href='#' onClick="showform('delete')">Delete</a></td>
         </tr>
     </table>
+    <input class="btn" type="submit" id="addTournament" value="Add Game to Tournament">
 
     <p>&nbsp;</p>
 
@@ -128,11 +130,11 @@
             <label>Start Date<label> <input type="date" name="start date">
             <label>End Date</label> <input type="date" name="end date">
         </fieldset>
-        <input class="btn" type="submit" id="addTournament" value="Add Tournament">
+        <input class="btn" type="submit" id="addTournamentsGames" value="Add Game to Tournament">
     </form>
 
     <p>&nbsp;</p>
-    
+
     <form>
         <legend><strong>Add Tournament Games</strong></legend>
         <fieldset class="'field">
@@ -151,5 +153,41 @@
         </fieldset>
         <input class="btn" type="submit" id="addTournamentsGames" value="Add Game to Tournament">
     </form>
+
+        <p>&nbsp;</p>
+
+    <form>
+        <legend><strong>Edit Tournament's Games</strong></legend>
+        <fieldset class="'field">
+            <label>TournamentID</label> <select name="tournament id">
+                <option value="1">Momocon</option>
+                <option value="2">DreamHack</option>
+                <option value="3">E3</option>
+                <option value="4">DragonCon</option>
+            </select>
+            <label>GameID</label> <select name="game id">
+                <option value="1">League of Legends</option>
+                <option value="2">Valorant</option>
+                <option value="3">Super Smash Bros</option>
+                <option value="4">Yu-Gi-Oh</option>
+            </select>
+        </fieldset>
+            <input class="btn" type="submit" id="editTournamentGames" value="Edit Tournament's Games">
+    </form>
+
+    <p>&nbsp;</p>
+
+    <form method="POST" id="deleteGamefromTournament">
+        <legend><strong>Delete Game from Tournament</strong></legend>
+        <fieldset class="fields">
+            <p>Are you sure you wish to delete the following?</p>
+            <input type="hidden" name="playerID" id="deleteplayerID" value="1">
+            <label><strong>TournamentID:</strong></label> 1
+            <label> <strong>GameID</strong> </label> 2
+              
+      </fieldset>
+      <input class="btn" type="submit" id="DeleteGameT" value="Delete Game from Tournament">
+            <input class="btn" type="button" value="cancel" onClick="browsePeople()">
+    </form> 
 </main>
 </body>
