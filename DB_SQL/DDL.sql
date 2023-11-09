@@ -52,14 +52,11 @@ CREATE OR REPLACE TABLE Sponsors (
 CREATE OR REPLACE TABLE Teams (
   TeamID int AUTO_INCREMENT NOT NULL UNIQUE,
   TeamName varchar(50) NOT NULL UNIQUE,
-  Captain int,
   Location varchar(45) NOT NULL,
   SponsorID int,
   TournamentID int,
   Description varchar(100) DEFAULT NULL,
   PRIMARY KEY (TeamID),
-  FOREIGN KEY (captain) REFERENCES Players(playerID)
-    ON DELETE SET NULL,
   FOREIGN KEY (SponsorID) REFERENCES Sponsors(SponsorID)
     ON DELETE SET NULL,
   FOREIGN KEY (TournamentID) REFERENCES Tournaments(TournamentID)
@@ -75,6 +72,7 @@ CREATE OR REPLACE TABLE Players (
   Name varchar(50) NOT NULL,
   Username varchar(50) NOT NULL UNIQUE,
   Birthdate date NOT NULL,
+  Captain boolean DEFAULT FALSE,
   TeamID int,
   GameID int,
   PRIMARY KEY (PlayerID),
@@ -138,20 +136,20 @@ INSERT INTO Sponsors (SponsorName, ContactPerson, ContactEmail) VALUES
 --
 -- Insert into 'Teams'
 --
-INSERT INTO Teams (TeamName, Captain, Location, SponsorID, TournamentID, Description) VALUES
-('TSM', 'John Doe', 'USA ', NULL, 3, 'Hello from TSM'),
-('C9', 'Jane Doe', 'Germany', 4, NULL, 'Hello from C9'),
-('Faze', 'Jack Doe', 'Mexico', 2, 2, 'Hello from Faze'),
-('T1', 'Mary Doe', 'South Korea', 1, 3, 'Hello from T1');
+INSERT INTO Teams (TeamName, Location, SponsorID, TournamentID, Description) VALUES
+('TSM',  'USA ', NULL, 3, 'Hello from TSM'),
+('C9', 'Germany', 4, NULL, 'Hello from C9'),
+('Faze',  'Mexico', 2, 2, 'Hello from Faze'),
+('T1',  'South Korea', 1, 3, 'Hello from T1');
 
 --
 -- Insert into 'Players'
 --
-INSERT INTO Players (Name, Username, Birthdate, TeamID, GameID) VALUES
-('John Doe', 'team1user1', '2000-01-01', NULL, 3),
-('Jane Doe', 'team1user2', '1999-02-02', 1, NULL),
-('Jack Doe', 'team2user1', '1997-03-07', 2, 4),
-('Mary Doe', 'team4user1', '2000-03-09', 4, 2);
+INSERT INTO Players (Name, Username, Birthdate, Captain, TeamID, GameID) VALUES
+('John Doe', 'team1user1', '2000-01-01', TRUE, NULL, 3),
+('Jane Doe', 'team1user2', '1999-02-02', FALSE, 1, NULL),
+('Jack Doe', 'team2user1', '1997-03-07', TRUE, 2, 4),
+('Mary Doe', 'team4user1', '2000-03-09', FALSE, 4, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;
 COMMIT;

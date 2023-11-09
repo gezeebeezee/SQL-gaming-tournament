@@ -9,15 +9,18 @@
 
 ----- SELECTS -----
 -- get all Tournaments information
-SELECT Tournaments.TournamentID, Tournaments.TournamentName, Tournaments.Location, Tournaments.StartDate, Tournaments.EndDate from Tournaments;
+SELECT Tournaments.TournamentID, Tournaments.TournamentName, Tournaments.Location, Tournaments.StartDate, Tournaments.EndDate 
+from Tournaments;
 
 -- get all Players information
-SELECT Players.PlayerID, Players.Name, Players.Username, Players.Birthdate, IFNULL(Teams.TeamName, "*No Team*") as Team, IFNULL(Games.Title, "No Game") as Game FROM Players
+SELECT Players.PlayerID, Players.Name, Players.Username, Players.Birthdate, IFNULL(Teams.TeamName, "*No Team*") as Team, IFNULL(Games.Title, "No Game") as Game 
+FROM Players
 LEFT OUTER JOIN Teams ON Teams.TeamID=Players.TeamID
 LEFT OUTER JOIN Games ON Games.GameID=Players.GameID;
 
 -- get all Teams information
-SELECT Teams.TeamID, Teams.TeamName, Teams.Captain, Teams.Location, IFNULL(Sponsors.SponsorName, "*No Sponsor*") as Sponsor, IFNULL(Tournaments.TournamentName, "No Tournament") as Tournament, Teams.Description FROM Teams
+SELECT Teams.TeamID, Teams.TeamName, Teams.Captain, Teams.Location, IFNULL(Sponsors.SponsorName, "*No Sponsor*") as Sponsor, IFNULL(Tournaments.TournamentName, "No Tournament") as Tournament, Teams.Description 
+FROM Teams
 LEFT OUTER JOIN Sponsors ON Sponsors.SponsorID=Teams.SponsorID
 LEFT OUTER JOIN Tournaments ON Tournaments.TournamentID=Teams.TournamentID;
 
