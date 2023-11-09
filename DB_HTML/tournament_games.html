@@ -21,6 +21,7 @@
         <a href="teams.html"> Teams</a> 
         <a href="players.html"> Players</a> 
         <a href="sponsors.html"> Sponsors</a>
+        <a href="tournament_games.html"> Games at Tournament</a>
     </nav>
 <main>
     <h2>Browse Tournaments</h2>
@@ -71,55 +72,6 @@
             <td><a href='#' onClick="showform('delete')">Delete</a></td>
         </tr>
     </table>
-
-    <p>&nbsp;</p>
-
-    <h2>Browse Games at Tournament</h2>
-    <table border =  "2" cellpadding = "5">
-        <tr>
-            <th>TournamentID</th>
-            <th>GameID</th>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>1</td>
-            <td><a href='#' onClick="showform('update')">Edit</a></td>
-            <td><a href='#' onClick="showform('delete')">Delete</a></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2</td>
-            <td><a href='#' onClick="showform('update')">Edit</a></td>
-            <td><a href='#' onClick="showform('delete')">Delete</a></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>3</td>
-            <td><a href='#' onClick="showform('update')">Edit</a></td>
-            <td><a href='#' onClick="showform('delete')">Delete</a></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>4</td>
-            <td><a href='#' onClick="showform('update')">Edit</a></td>
-            <td><a href='#' onClick="showform('delete')">Delete</a></td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>1</td>
-            <td><a href='#' onClick="showform('update')">Edit</a></td>
-            <td><a href='#' onClick="showform('delete')">Delete</a></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>2</td>
-            <td><a href='#' onClick="showform('update')">Edit</a></td>
-            <td><a href='#' onClick="showform('delete')">Delete</a></td>
-        </tr>
-    </table>
-
-    <p>&nbsp;</p>
-
     <form>
         <legend><strong>Add Tournament</strong></legend>
         <fieldset class="'field">
@@ -128,28 +80,5 @@
             <label>Start Date<label> <input type="date" name="start date">
             <label>End Date</label> <input type="date" name="end date">
         </fieldset>
-        <input class="btn" type="submit" id="addTournament" value="Add Tournament">
-    </form>
-
-    <p>&nbsp;</p>
-    
-    <form>
-        <legend><strong>Add Tournament Games</strong></legend>
-        <fieldset class="'field">
-            <label>TournamentID</label> <select name="tournament id">
-                <option value="1">Momocon</option>
-                <option value="2">DreamHack</option>
-                <option value="3">E3</option>
-                <option value="4">DragonCon</option>
-            </select>
-            <label>GameID</label> <select name="game id">
-                <option value="1">League of Legends</option>
-                <option value="2">Valorant</option>
-                <option value="3">Super Smash Bros</option>
-                <option value="4">Yu-Gi-Oh</option>
-            </select>
-        </fieldset>
-        <input class="btn" type="submit" id="addTournamentsGames" value="Add Game to Tournament">
-    </form>
 </main>
 </body>

@@ -52,16 +52,18 @@ CREATE OR REPLACE TABLE Sponsors (
 CREATE OR REPLACE TABLE Teams (
   TeamID int AUTO_INCREMENT NOT NULL UNIQUE,
   TeamName varchar(50) NOT NULL UNIQUE,
-  Captain varchar(45) NOT NULL,
+  Captain int,
   Location varchar(45) NOT NULL,
   SponsorID int,
   TournamentID int,
   Description varchar(100) DEFAULT NULL,
   PRIMARY KEY (TeamID),
-   FOREIGN KEY (SponsorID) REFERENCES Sponsors(SponsorID)
-    ON DELETE CASCADE,
+  FOREIGN KEY (captain) REFERENCES Players(playerID)
+    ON DELETE SET NULL,
+  FOREIGN KEY (SponsorID) REFERENCES Sponsors(SponsorID)
+    ON DELETE SET NULL,
   FOREIGN KEY (TournamentID) REFERENCES Tournaments(TournamentID)
-    ON DELETE CASCADE
+    ON DELETE SET NULL
 );
 
 --
@@ -77,9 +79,9 @@ CREATE OR REPLACE TABLE Players (
   GameID int,
   PRIMARY KEY (PlayerID),
   FOREIGN KEY (GameID) REFERENCES Games(GameID)
-    ON DELETE CASCADE,
+    ON DELETE SET NULL,
   FOREIGN KEY (TeamID) REFERENCES Teams(TeamID)
-    ON DELETE CASCADE
+    ON DELETE SET NULL
 );
 
 --
@@ -91,7 +93,7 @@ CREATE OR REPLACE TABLE Tournaments_has_Games (
   TournamentID int NOT NULL,
   PRIMARY KEY (GameID, TournamentID),
   FOREIGN KEY (GameID) REFERENCES Games(GameID)
-    ON DELETE CASCADE,
+    ON DELETE SET NULL,
   FOREIGN KEY (TournamentID) REFERENCES Tournaments(TournamentID) 
     ON DELETE CASCADE
 );

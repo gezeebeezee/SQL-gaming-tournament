@@ -76,6 +76,9 @@
             <td><a href='#' onClick="showform('delete')">Delete</a></td>
         </tr>
     </table>
+
+    <p>&nbsp;</p>
+
     <form>
         <legend><strong>Add Player</strong></legend>
         <fieldset class="'field">
@@ -98,9 +101,18 @@
         </fieldset>
         <input class="btn" type="submit" id="addPlayer" value="Add Player">
     </form>
+
+    <p>&nbsp;</p>
+
     <form>
         <legend><strong>Edit Player</strong></legend>
         <fieldset class="'field">
+            <label>PlayerID</label> <select name="player">
+                <option value="1">John Doe</option>
+                <option value="2">Jane Doe</option>
+                <option value="3">Jack Doe</option>
+                <option value="4">Mary Doe</option>
+            </select>
             <label>Player Name</label> <input type="text" name="player name">
             <label>Username</label> <input type="text" name="username">
             <label>Birthdate</label> <input type="date" name="birth date">

@@ -81,11 +81,15 @@
             <td><a href='#' onClick="showform('delete')">Delete</a></td>
         </tr>
     </table>
+
+    <p>&nbsp;</p>
+
     <form>
         <legend><strong>Add Team</strong></legend>
         <fieldset class="'field">
             <label>Team Name</label> <input type="text" name="player name">
             <label>Captain</label> <select name="captain">
+                <option value="NULL">None</option>
                 <option value="1">John Doe</option>
                 <option value="2">Jane Doe</option>
                 <option value="3">Jack Doe</option>
@@ -100,12 +104,15 @@
                 <option value="4">Chipotle</option>
             </select>
             <label>Registered Tournament</label> <select name="tournament">
+                <option value="NULL">None</option>
                 <option value="1">Momocon</option>
                 <option value="2">Dreamhack</option>
                 <option value="3">E3</option>
                 <option value="4">DragonCon</option>
             </select>
+            <label>Description</label> <input type="text" name="description">
         </fieldset>
+        <input class="btn" type="submit" id="addTeam" value="Add Team">
     </form> 
 </main>
 </body>
