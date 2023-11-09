@@ -135,6 +135,19 @@
 
     <p>&nbsp;</p>
 
+    <form method="POST" id="deleteTournament">
+        <legend><strong>Delete Tournament</strong></legend>
+        <fieldset class="fields">
+            <p>Are you sure you wish to delete the following?</p>
+            <input type="hidden" name="tournamentID" id="deletetournamentID" value="1">
+            <label><strong>TournamentID:</strong></label> 1  
+      </fieldset>
+      <input class="btn" type="submit" id="DeleteGameT" value="Delete Game from Tournament">
+            <input class="btn" type="button" value="cancel" onClick="browsePeople()">
+    </form> 
+
+        <p>&nbsp;</p>
+
     <form>
         <legend><strong>Add Tournament Games</strong></legend>
         <fieldset class="'field">
@@ -153,8 +166,8 @@
         </fieldset>
         <input class="btn" type="submit" id="addTournamentsGames" value="Add Game to Tournament">
     </form>
-
-        <p>&nbsp;</p>
+    
+    <p>&nbsp;</p>
 
     <form>
         <legend><strong>Edit Tournament's Games</strong></legend>
