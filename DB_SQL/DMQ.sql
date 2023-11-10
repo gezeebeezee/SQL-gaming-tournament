@@ -9,64 +9,64 @@
 
 ----- SELECTS -----
 -- get all Tournaments information
-SELECT Tournaments.TournamentID, Tournaments.TournamentName, Tournaments.Location, Tournaments.StartDate, Tournaments.EndDate 
+SELECT Tournaments.tournamentID, Tournaments.tournamentName, Tournaments.location, Tournaments.startDate, Tournaments.endDate 
 from Tournaments;
 
 -- get all Players information
-SELECT Players.PlayerID, Players.Name, Players.Username, Players.Birthdate, Players.Captain, IFNULL(Teams.TeamName, "*No Team*") as Team, IFNULL(Games.Title, "*No Game*") as Game 
+SELECT Players.playerID, Players.name, Players.username, Players.birthdate, Players.captain, IFNULL(Teams.teamName, "*No Team*") as Team, IFNULL(Games.title, "*No Game*") as Game 
 FROM Players
-LEFT JOIN Teams ON Teams.TeamID=Players.TeamID
-LEFT JOIN Games ON Games.GameID=Players.GameID;
+LEFT JOIN Teams ON Teams.teamID=Players.teamID
+LEFT JOIN Games ON Games.gameID=Players.gameID;
 
 -- get all Teams information
-SELECT Teams.TeamID, Teams.TeamName, Teams.Location, IFNULL(Sponsors.SponsorName, "*No Sponsor*") as Sponsor, IFNULL(Tournaments.TournamentName, "*No Tournament*") as Tournament, Teams.Description 
+SELECT Teams.teamID, Teams.teamName, Teams.location, IFNULL(Sponsors.sponsorName, "*No Sponsor*") as Sponsor, IFNULL(Tournaments.tournamentName, "*No Tournament*") as Tournament, Teams.description 
 FROM Teams
-LEFT JOIN Sponsors ON Sponsors.SponsorID=Teams.SponsorID
-LEFT JOIN Tournaments ON Tournaments.TournamentID=Teams.TournamentID;
+LEFT JOIN Sponsors ON Sponsors.sponsorID=Teams.sponsorID
+LEFT JOIN Tournaments ON Tournaments.tournamentID=Teams.tournamentID;
 
 -- get all Games information
-SELECT Games.GameID, Games.Title, Games.Genre, Games.Platform from Games;
+SELECT Games.gameID, Games.title, Games.genre, Games.platform from Games;
 
 -- get all Sponsors information
-SELECT Sponsors.SponsorID, Sponsors.SponsorName, Sponsors.ContactPerson, Sponsors.ContactEmail from Sponsors;
+SELECT Sponsors.sponsorID, Sponsors.sponsorName, Sponsors.contactPerson, Sponsors.contactEmail from Sponsors;
 
 
 ----- INSERTS -----
 -- add a new Tournament
-INSERT INTO Tournaments (TournamentName, Location, StartDate, EndDate)
-VALUES (:TournamentNameInput, :LocationInput, :StartDateInput, :EndDateInput);
+INSERT INTO Tournaments (tournamentName, location, startDate, endDate)
+VALUES (:tournamentNameInput, :locationInput, :startDateInput, :endDateInput);
 
 -- add a new Player
-INSERT INTO Players (Name, Username, Birthdate, Captain, TeamID, GameID)
-VALUES (:NameInput, :UsernameInput, :BirthdateInput, :CaptainInput, :TeamID_from_dropdown_Input, :GameID_from_dropdown_Input);
+INSERT INTO Players (name, username, birthdate, captain, teamID, gameID)
+VALUES (:nameInput, :usernameInput, :birthdateInput, :captainInput, :teamID_from_dropdown_Input, :gameID_from_dropdown_Input);
 
 -- add a new Team
-INSERT INTO Teams (TeamName, Location, SponsorID, TournamentID, Description)
-VALUES (:TeamNameInput, :LocationInput, :SponsorID_from_dropdown_Input, :TournamentID_from_dropdown_Input, :DescriptionInput);
+INSERT INTO Teams (teamName, location, sponsorID, tournamentID, description)
+VALUES (:teamNameInput, :locationInput, :sponsorID_from_dropdown_Input, :tournamentID_from_dropdown_Input, :descriptionInput);
 
 -- add a new Game
-INSERT INTO Games (Title, Genre, Platform)
-VALUES (:TitleInput, :GenreInput, :PlatformInput);
+INSERT INTO Games (title, genre, platform)
+VALUES (:titleInput, :genreInput, :platformInput);
 
 -- add a new Sponsor
-INSERT INTO Sponsors (SponsorName, ContactPerson, ContactEmail)
-VALUES (:SponsorNameInput, :ContactPersonInput, :ContactEmailInput);
+INSERT INTO Sponsors (sponsorName, contactPerson, contactEmail)
+VALUES (:sponsorNameInput, :contactPersonInput, :contactEmailInput);
 
 -- add Game to Tournament (M-M Relationship)
-INSERT INTO Tournaments_has_Games (GameID, TournamentID)
-VALUES (:GameID_from_dropdown_Input, :TournamentID_from_dropdown_Input);
+INSERT INTO Tournaments_has_Games (gameID, tournamentID)
+VALUES (:gameID_from_dropdown_Input, :tournamentID_from_dropdown_Input);
 
 
 ----- Update -----
 -- update Player information
-UPDATE Players SET Name = :NameInput, Username = :UsernameInput, Birthdate = :BirthdateInput, Captain = :CaptainInput, TeamID = :TeamID_from_dropdown_Input, GameID = :GameID_from_dropdown_Input WHERE PlayerID = :PlayerID_from_dropdown_Input;
+UPDATE Players SET name = :nameInput, username = :usernameInput, birthdate = :birthdateInput, captain = :captainInput, teamID = :teamID_from_dropdown_Input, gameID = :gameID_from_dropdown_Input WHERE playerID = :playerID_from_dropdown_Input;
 
 -- update Tournaments_has_Games information
-UPDATE Tournaments_has_Games SET GameID = :GameID_from_dropdown_Input WHERE TournamentID = :TournamentID_from_dropdown_Input;
+UPDATE Tournaments_has_Games SET gameID = :gameID_from_dropdown_Input WHERE tournamentID = :tournamentID_from_dropdown_Input;
 
 ----- Delete -----
 -- delete a Player
-DELETE FROM Players WHERE PlayerID = :PlayerID_selected_from_browse_player_page;
+DELETE FROM Players WHERE playerID = :playerID_selected_from_browse_player_page;
 
 -- disassociate a Game from a Tournament
-DELETE FROM Tournaments_has_Games WHERE GameID = :GameID_selected_from_game_and_tournament_list AND TournamentID = :TournamentID_selected_from_game_and_tournament_list;
+DELETE FROM Tournaments_has_Games WHERE gameID = :gameID_selected_from_game_and_tournament_list AND tournamentID = :tournamentID_selected_from_game_and_tournament_list;
