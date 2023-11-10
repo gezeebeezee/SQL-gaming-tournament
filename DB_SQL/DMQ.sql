@@ -13,16 +13,16 @@ SELECT Tournaments.TournamentID, Tournaments.TournamentName, Tournaments.Locatio
 from Tournaments;
 
 -- get all Players information
-SELECT Players.PlayerID, Players.Name, Players.Username, Players.Birthdate, IFNULL(Teams.TeamName, "*No Team*") as Team, IFNULL(Games.Title, "No Game") as Game 
+SELECT Players.PlayerID, Players.Name, Players.Username, Players.Birthdate, Players.Captain, IFNULL(Teams.TeamName, "*No Team*") as Team, IFNULL(Games.Title, "*No Game*") as Game 
 FROM Players
-LEFT OUTER JOIN Teams ON Teams.TeamID=Players.TeamID
-LEFT OUTER JOIN Games ON Games.GameID=Players.GameID;
+LEFT JOIN Teams ON Teams.TeamID=Players.TeamID
+LEFT JOIN Games ON Games.GameID=Players.GameID;
 
 -- get all Teams information
-SELECT Teams.TeamID, Teams.TeamName, Teams.Captain, Teams.Location, IFNULL(Sponsors.SponsorName, "*No Sponsor*") as Sponsor, IFNULL(Tournaments.TournamentName, "No Tournament") as Tournament, Teams.Description 
+SELECT Teams.TeamID, Teams.TeamName, Teams.Location, IFNULL(Sponsors.SponsorName, "*No Sponsor*") as Sponsor, IFNULL(Tournaments.TournamentName, "*No Tournament*") as Tournament, Teams.Description 
 FROM Teams
-LEFT OUTER JOIN Sponsors ON Sponsors.SponsorID=Teams.SponsorID
-LEFT OUTER JOIN Tournaments ON Tournaments.TournamentID=Teams.TournamentID;
+LEFT JOIN Sponsors ON Sponsors.SponsorID=Teams.SponsorID
+LEFT JOIN Tournaments ON Tournaments.TournamentID=Teams.TournamentID;
 
 -- get all Games information
 SELECT Games.GameID, Games.Title, Games.Genre, Games.Platform from Games;
@@ -37,12 +37,12 @@ INSERT INTO Tournaments (TournamentName, Location, StartDate, EndDate)
 VALUES (:TournamentNameInput, :LocationInput, :StartDateInput, :EndDateInput);
 
 -- add a new Player
-INSERT INTO Players (Name, Username, Birthdate, TeamID, GameID)
-VALUES (:NameInput, :UsernameInput, :BirthdateInput, :TeamID_from_dropdown_Input, :GameID_from_dropdown_Input);
+INSERT INTO Players (Name, Username, Birthdate, Captain, TeamID, GameID)
+VALUES (:NameInput, :UsernameInput, :BirthdateInput, :CaptainInput, :TeamID_from_dropdown_Input, :GameID_from_dropdown_Input);
 
 -- add a new Team
-INSERT INTO Teams (TeamName, Captain, Location, SponsorID, TournamentID, Description)
-VALUES (:TeamNameInput, :Captain_from_dropdown_Input, :LocationInput, :SponsorID_from_dropdown_Input, :TournamentID_from_dropdown_Input, :DescriptionInput);
+INSERT INTO Teams (TeamName, Location, SponsorID, TournamentID, Description)
+VALUES (:TeamNameInput, :LocationInput, :SponsorID_from_dropdown_Input, :TournamentID_from_dropdown_Input, :DescriptionInput);
 
 -- add a new Game
 INSERT INTO Games (Title, Genre, Platform)
@@ -59,7 +59,7 @@ VALUES (:GameID_from_dropdown_Input, :TournamentID_from_dropdown_Input);
 
 ----- Update -----
 -- update Player information
-UPDATE Players SET Name = :NameInput, Username = :UsernameInput, Birthdate = :BirthdateInput, TeamID = :TeamID_from_dropdown_Input, GameID = :GameID_from_dropdown_Input WHERE PlayerID = :PlayerID_from_dropdown_Input;
+UPDATE Players SET Name = :NameInput, Username = :UsernameInput, Birthdate = :BirthdateInput, Captain = :CaptainInput, TeamID = :TeamID_from_dropdown_Input, GameID = :GameID_from_dropdown_Input WHERE PlayerID = :PlayerID_from_dropdown_Input;
 
 -- update Tournaments_has_Games information
 UPDATE Tournaments_has_Games SET GameID = :GameID_from_dropdown_Input WHERE TournamentID = :TournamentID_from_dropdown_Input;
