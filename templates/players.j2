@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Players</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="robots" content="noindex,noarchive,nofollow" />
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+</head>
+
+<body>
+    <header>
+        <h1>Players</h1>
+    </header>
+    <nav>
+        <a href="index.html"> Home</a>
+        <a href="tournaments.html"> Tournaments</a>
+        <a href ="games.html"> Games</a> 
+        <a href="teams.html"> Teams</a> 
+        <a href="players.html"> Players</a> 
+        <a href="sponsors.html"> Sponsors</a>
+    </nav>
+<main>
+    <h2>Browse Players</h2>
+    <table border =  "2" cellpadding = "5">
+        <!-- Access data tuple passed from app.py --> 
+            {% if data %}
+			    <thead>
+				    <tr>
+					    <!-- Iterate through each key in the first entry to get the column name -->
+                        {% for key in data[0].keys() %}
+					    
+                        <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+					    <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+					
+                        <!-- End of this for loop -->
+                        {% endfor %} 
+                    </tr>
+
+				<tbody>
+					<!-- Now, iterate through every item in data -->
+                    {% for item in data %}
+					    <tr>
+						    <!-- Then iterate through every key in the current item dictionary -->
+                            {% for key in item.keys() %}
+
+						    <!-- Create a <td> element with the value of that key in it -->
+						    <td> {{item[key]}} </td> 
+                            {% endfor %}
+
+                            <!-- Create our edit/delete buttons -->
+						    <td><a href="edit_player/{{item.id}}" class="btn btn-default">Edit</a></td>
+						    <td><a href="delete_player/{{item.id}}" class="btn btn-default">Delete</a></td>
+
+					    </tr> 
+                    {% endfor %} 
+            {% endif %} 
+    </table>
+    <form id="insertPlayer" action="/players" method="POST">
+        <legend><strong>Add Player</strong></legend>
+        <fieldset class="'field">
+            <label>Player Name:</label> <input type="text" name="name" id="name" required>
+            <label>Username</label> <input type="text" name="username" id="username" required>
+            <label>Birthdate</label> <input type="date" name="birthdate" id="birthdate" required>
+            <label>Captain</label> <select name="captain" id="captain">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+            <label>Team</label> <select name="team" id ="team">
+                    <option value="0"> None </option>
+                {% for item in teams %}
+                    <option value="{{item['teamID']}}">{{item['teamName']}}</option>
+                {% endfor %}
+            </select>
+            <label>Preferred Game</label> <select name="game">
+                <option value="0">None</option>
+                {% for item in games %}
+                    <option value="{{item['gameID']}}">{{item['title']}}</option>
+                {% endfor %}
+            </select>
+        </fieldset>
+        <input class="btn" type="submit" id="addPlayer" value="Add Player" name="addPlayer">
+    </form>
+<p>&nbsp;</p>
+</main>
+</body>
+

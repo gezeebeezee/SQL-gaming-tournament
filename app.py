@@ -18,26 +18,65 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = ""
-app.config["MYSQL_PASSWORD"] = ""
-app.config["MYSQL_DB"] = ""
+app.config["MYSQL_USER"] = "cs340_vust"
+app.config["MYSQL_PASSWORD"] = "x62ZkepfILY7"
+app.config["MYSQL_DB"] = "cs340_vust"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
 
 
 # Routes
+
 # have homepage route to /people by default for convenience, 
 # generally this will be your home route with its own template
 @app.route('/')
 def home():
     return redirect("/players")
 
-
-@app.route("/players", methods=["GET"])
+# route for players page
+@app.route("/players", methods=["GET", "POST"])
 def players():
+    if request.method == "POST":
+        # grab inputs from form
+        if request.form.get("addPlayer"):
+            name = request.form["name"]
+            username = request.form["username"]
+            birthdate = request.form["birthdate"]
+            captain = request.form["captain"]
+            team = request.form["team"]
+            game = request.form["game"]
+
+            # account for combinations of null team or null game
+            if team == "0" and game == "0":
+                query = "INSERT INTO Players (name, username, birthdate, captain) VALUES (%s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, birthdate, captain))
+                mysql.connection.commit()
+
+            elif team == "0":
+                query = "INSERT INTO Players (name, username, birthdate, captain, gameID) VALUES (%s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, birthdate, captain, game))
+                mysql.connection.commit()
+
+            elif game == "0":
+                query = "INSERT INTO Players (name, username, birthdate, captain, teamID) VALUES (%s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, birthdate, captain, team))
+                mysql.connection.commit()
+
+            else:
+                query = "INSERT INTO Players (name, username, birthdate, captain, teamID, gameID) VALUES (%s, %s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, birthdate, captain, team, game))
+                mysql.connection.commit()
+
+            # redirect back to player page
+            return redirect("/players")
+
     if request.method == "GET":
-        # mySQL query to grab all the people in bsg_people
+        # mySQL query to grab all the players
         query = "SELECT Players.playerID, Players.name, Players.username, Players.birthdate, Players.captain, IFNULL(Teams.teamName, '*No Team*') as Team, IFNULL(Games.title, '*No Game*') as Game FROM Players LEFT JOIN Teams ON Teams.teamID=Players.teamID LEFT JOIN Games ON Games.gameID=Players.gameID;"
         cur = mysql.connection.cursor()
         cur.execute(query)
@@ -50,16 +89,15 @@ def players():
         teams_data = cur.fetchall()
 
         # mySQL query to grab game id/name data for our dropdown
-        query2 = "SELECT gameID, title FROM Games"
+        query3 = "SELECT gameID, title FROM Games"
         cur = mysql.connection.cursor()
-        cur.execute(query2)
+        cur.execute(query3)
         games_data = cur.fetchall()
 
-        # render edit_player page passing our query data and team/gane data to the edit_player template
-        return render_template("main.j2", data=data, teams=teams_data, games=games_data)
+        # send data to populate drop down boxes
+        return render_template("players.j2", data=data, teams=teams_data, games=games_data)
 
 
 # Listener
-# change the port number if deploying on the flip servers
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
