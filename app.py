@@ -96,6 +96,84 @@ def players():
 
         # send data to populate drop down boxes
         return render_template("players.j2", data=data, teams=teams_data, games=games_data)
+    
+
+# route for delete functionality, deleting a person from bsg_people,
+# we want to pass the 'id' value of that person on button click (see HTML) via the route
+@app.route("/delete_player/<int:id>")
+def delete_player(id):
+    # mySQL query to delete the person with our passed id
+    query = "DELETE FROM Players WHERE playerID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+
+    # redirect back to people page
+    return redirect("/players")
+
+# route for edit functionality, updating the attributes of a person in bsg_people
+# similar to our delete route, we want to the pass the 'id' value of that person on button click (see HTML) via the route
+@app.route("/edit_player/<int:id>", methods=["POST", "GET"])
+def edit_people(id):
+    if request.method == "GET":
+        # mySQL query to grab the info of the person with our passed id
+        query = "SELECT * FROM Players WHERE playerID = %s" % (id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        # mySQL query to grab planet id/name data for our dropdown
+        query2 = "SELECT teamID, teamName FROM Teams"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        teams_data = cur.fetchall()
+
+        # render edit_people page passing our query data and homeworld data to the edit_people template
+        return render_template("players.j2", data=data, teams=teams_data)
+
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Person' button
+        if request.form.get("Edit_Player"):
+            # grab user form inputs
+            id = request.form["playerID"]
+            name = request.form["name"]
+            username = request.form["username"]
+            captain = request.form["captain"]
+            team = request.form["team"]
+            game = request.form["game"]
+
+            # account for null game AND team
+            if (game == "0") and team == "0":
+                # mySQL query to update the attributes of person with our passed id value
+                query = "UPDATE Players SET Players.name = %s, Players.username = %s, Players.captain = %s, Players.teamID = NULL, Players.gameID = NULL WHERE Players.playerID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, captain, id))
+                mysql.connection.commit()
+
+            # account for null team
+            elif team == "0":
+                query = "UPDATE Players SET Players.name = %s, Players.username = %s, Players.captain = %s, Players.teamID = NULL, Players.gameID = %s WHERE Players.playerID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, captain, game, id))
+                mysql.connection.commit()
+
+            # account for null game
+            elif game == "" or game == "None" or game == 0:
+                query = "UPDATE Players SET Players.name = %s, Players.username = %s, Players.captain = %s, Players.teamID = %s, Players.gameID = NULL WHERE Players.playerID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, captain, team, id))
+                mysql.connection.commit()
+
+            # no null inputs
+            else:
+                query = "UPDATE Players SET Players.name = %s, Players.username = %s, Players.captain = %s, Players.teamID = %s, Players.gameID = %s WHERE Players.playerID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (name, username, captain, team, game, id))
+                mysql.connection.commit()
+
+            # redirect back to people page after we execute the update query
+            return redirect("/players")
 
 
 # Listener
