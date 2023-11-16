@@ -19,7 +19,7 @@
         <a href="tournaments.html"> Tournaments</a>
         <a href ="games.html"> Games</a> 
         <a href="teams.html"> Teams</a> 
-        <a href="players.html"> Players</a> 
+        <a href="players"> Players</a> 
         <a href="sponsors.html"> Sponsors</a>
     </nav>
 <main>
@@ -85,7 +85,7 @@
     </form>
     <div id="edit">
 		<!-- form to edit data in Players-->
-		<form id="editPlayer" action="/edit_player/{{data[0].playerID}}" method="post">
+		<form id="editPlayer" action="edit_player/{{data[0].playerID}}" method="post">
 			<legend><strong>Edit Player</strong></legend>
 			<fieldset>
                 <input type="hidden" value="{{data[0].playerID}}" class="form-control" id="playerID" name="playerID" required>
@@ -93,8 +93,9 @@
                 <label>Username</label> <input type="text" name="username" id="username" value="{{data[0].username}}" required>
                 <label>Birthdate</label> <input type="date" name="birthdate" id="birthdate" value="{{data[0].birthdate}}" required>
                 <label>Captain</label> <select name="captain" id="captain">
-                    <option value="0" selected>No</option>
-                    <option value="1">Yes</option>
+                    <option value="0"> No </option>
+                    <option value="1"> Yes </option>
+                    
                 </select>
                 <label>Team</label> <select name="team" id ="team" placeholder="" required>
                     <option value="0"> None </option>
@@ -119,8 +120,8 @@
                     {% endfor %}
                 </select>
             </fieldset>
-                <input class="btn" type="submit" id="Edit_Player" value="Submit Changes" name="Edit_Player">
-				<input class="btn" type="button" value="Cancel" onClick="browsePeople()" style="margin:.5rem;"> 
+                <input type="submit" value="Edit Person" name="Edit_Person" class="btn btn-primary" style="margin:.5rem;">
+                <a href='/players'><input class="btn" type="button" value="cancel"></a> 
         </form>
 	</div><!--edit-->
 <p>&nbsp;</p>

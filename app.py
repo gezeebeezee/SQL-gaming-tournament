@@ -122,14 +122,20 @@ def edit_people(id):
         cur.execute(query)
         data = cur.fetchall()
 
-        # mySQL query to grab planet id/name data for our dropdown
+        # mySQL query to grab team id/name data for our dropdown
         query2 = "SELECT teamID, teamName FROM Teams"
         cur = mysql.connection.cursor()
         cur.execute(query2)
         teams_data = cur.fetchall()
 
+        #mysql query to grab game id/name data for dropdown
+        query3 = "SELECT gameID, title FROM Games"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        games_data = cur.fetchall()
+
         # render edit_people page passing our query data and homeworld data to the edit_people template
-        return render_template("players.j2", data=data, teams=teams_data)
+        return render_template("players.j2", data=data, teams=teams_data, games=games_data)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
