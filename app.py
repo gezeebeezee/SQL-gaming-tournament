@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 from flask import request
 import os
 
-# Code adapted from flask-starter-app skeleton code for bsg_people
+
 # Configuration
 
 app = Flask(__name__)
@@ -35,6 +35,10 @@ def home():
     return redirect("/players")
 
 # route for players page
+# Citation for the following function
+# Adapted from cs340-flask-starter-app
+# Modified variables and queries to fit requirements needed for our Players table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
 @app.route("/players", methods=["GET", "POST"])
 def players():
     if request.method == "POST":
@@ -98,8 +102,11 @@ def players():
         return render_template("players.j2", data=data, teams=teams_data, games=games_data)
     
 
-# route for delete functionality, deleting a person from bsg_people,
-# we want to pass the 'id' value of that person on button click (see HTML) via the route
+# route for delete functionality
+# Citation for the following function
+# Adapted from flask-starter-app > bsg_people code
+# Modified variables and queries to fit requirements needed for Players database
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
 @app.route("/delete_player/<int:id>")
 def delete_player(id):
     # mySQL query to delete the person with our passed id
@@ -111,12 +118,15 @@ def delete_player(id):
     # redirect back to people page
     return redirect("/players")
 
-# route for edit functionality, updating the attributes of a person in bsg_people
-# similar to our delete route, we want to the pass the 'id' value of that person on button click (see HTML) via the route
+# route for edit functionality
+# Citation for the following function
+# Adapted from flask-starter-app code
+# Modified variables and queries to select desired data from Players database
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
 @app.route("/edit_player/<int:id>", methods=["POST", "GET"])
 def edit_player(id):
     if request.method == "GET":
-        # mySQL query to grab the info of the person with our passed id
+        # mySQL query to grab the info of the player with passed id
         query = "SELECT Players.playerID, Players.name, Players.username, Players.birthdate, Players.captain, IFNULL(Teams.teamName, '*No Team*') as team, IFNULL(Games.title, '*No Game*') as game FROM Players LEFT JOIN Teams ON Teams.teamID=Players.teamID LEFT JOIN Games ON Games.gameID=Players.gameID WHERE playerID = %s" % (id)
         cur = mysql.connection.cursor()
         cur.execute(query)
