@@ -135,7 +135,7 @@ def edit_people(id):
         games_data = cur.fetchall()
 
         # render edit_people page passing our query data and homeworld data to the edit_people template
-        return render_template("players.j2", data=data, teams=teams_data, games=games_data)
+        return render_template("edit_players.j2", data=data, teams=teams_data, games=games_data)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
