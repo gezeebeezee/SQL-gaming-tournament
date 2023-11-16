@@ -58,7 +58,7 @@
                 <label>Team</label> <select name="team" id ="team" placeholder="" required>
                     <option value="0"> None </option>
                     {% for team in teams %}
-                        {% if team['teamID'] == data[0].teamID %}
+                        {% if team['teamName'] == data[0].team %}
                             <option value="{{team['teamID']}}" selected> {{team['teamName']}} </option>
                         {% else %}
                             <option value="{{team['teamID']}}"> {{team['teamName']}} </option>
@@ -68,7 +68,7 @@
                 <label>Preferred Game</label> <select name="game" placeholder="" required>
                     <option value="0"> None </option>
                     {% for item in games %}
-                        {% if item['gameID'] == data[0].gameID %}
+                        {% if item['title'] == data[0].game %}
                             <option value="{{item['gameID']}}" selected> {{item['title']}} </option>
                         {% else %}
                             <option value="{{item['gameID']}}"> {{item['title']}} </option>
