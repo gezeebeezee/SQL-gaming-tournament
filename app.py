@@ -3,7 +3,7 @@ from flask_mysqldb import MySQL
 from flask import request
 import os
 
-
+# Code adapted from flask-starter-app skeleton code for bsg_people
 # Configuration
 
 app = Flask(__name__)
@@ -134,12 +134,12 @@ def edit_player(id):
         cur.execute(query3)
         games_data = cur.fetchall()
 
-        # render edit_people page passing our query data and homeworld data to the edit_people template
+        # render edit_player page passing our query data, teams data, and games data to the edit_player template
         return render_template("edit_player.j2", data=data, teams=teams_data, games=games_data)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
-        # fire off if user clicks the 'Edit Person' button
+        # fire off if user clicks the 'Edit Player' button
         if request.form.get("Edit_Player"):
             # grab user form inputs
             id = request.form["playerID"]
