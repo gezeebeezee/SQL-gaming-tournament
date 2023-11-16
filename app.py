@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = ""
-app.config["MYSQL_PASSWORD"] = ""
-app.config["MYSQL_DB"] = ""
+app.config["MYSQL_USER"] = "cs340_lekevinp"
+app.config["MYSQL_PASSWORD"] = "5695"
+app.config["MYSQL_DB"] = "cs340_lekevinp"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -114,7 +114,7 @@ def delete_player(id):
 # route for edit functionality, updating the attributes of a person in bsg_people
 # similar to our delete route, we want to the pass the 'id' value of that person on button click (see HTML) via the route
 @app.route("/edit_player/<int:id>", methods=["POST", "GET"])
-def edit_people(id):
+def edit_player(id):
     if request.method == "GET":
         # mySQL query to grab the info of the person with our passed id
         query = "SELECT * FROM Players WHERE playerID = %s" % (id)
@@ -135,7 +135,7 @@ def edit_people(id):
         games_data = cur.fetchall()
 
         # render edit_people page passing our query data and homeworld data to the edit_people template
-        return render_template("edit_players.j2", data=data, teams=teams_data, games=games_data)
+        return render_template("edit_player.j2", data=data, teams=teams_data, games=games_data)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
@@ -178,7 +178,7 @@ def edit_people(id):
                 cur.execute(query, (name, username, captain, team, game, id))
                 mysql.connection.commit()
 
-            # redirect back to people page after we execute the update query
+            # redirect back to players page after we execute the update query
             return redirect("/players")
 
 
