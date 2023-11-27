@@ -34,6 +34,32 @@ mysql = MySQL(app)
 def home():
     return redirect("/players")
 
+@app.route("/sponsors", methods=["GET", "POST"])
+def sponsors():
+    if request.method == "POST":
+        # grab inputs from form
+        sponsor = request.form["sponsorName"]
+        contactPerson = request.form["contactPerson"]
+        contactEmail = request.form["contactEmail"]
+
+        # query to insert form values into database
+        query = "INSERT INTO Sponsors (sponsorName, contactPerson, contactEmail) VALUES (%s, %s, %s)"
+        cur = mysql.connection.cursor()
+        cur.execute(query, (sponsor, contactPerson, contactEmail))
+        mysql.connection.commit()
+
+        # redirect back to tournament page
+        return redirect("/sponsors")
+
+    if request.method == "GET":
+        # mySQL query to grab all the tournaments
+        query = "SELECT Sponsors.sponsorID, Sponsors.sponsorName, Sponsors.contactPerson, Sponsors.contactEmail from Sponsors;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        return render_template("sponsors.j2", data=data)
+
 @app.route("/tournaments", methods=["GET", "POST"])
 def tournaments():
     if request.method == "POST":
@@ -60,6 +86,32 @@ def tournaments():
         data = cur.fetchall()
 
         return render_template("tournaments.j2", data=data)
+
+@app.route("/games", methods=["GET", "POST"])
+def games():
+    if request.method == "POST":
+        # grab inputs from form
+        title = request.form["title"]
+        genre = request.form["genre"]
+        platform = request.form["platform"]
+
+        # query to insert form values into database
+        query = "INSERT INTO Games (title, genre, platform) VALUES (%s, %s, %s)"
+        cur = mysql.connection.cursor()
+        cur.execute(query, (title, genre, platform))
+        mysql.connection.commit()
+
+        # redirect back to tournament page
+        return redirect("/tournaments")
+
+    if request.method == "GET":
+        # mySQL query to grab all the tournaments
+        query = "SELECT Games.gameID, Games.title, Games.genre, Games.platform FROM Games;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        return render_template("games.j2", data=data)
 
 #route for teams page
 @app.route("/teams", methods=["GET", 'POST'])

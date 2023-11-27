@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Tournaments</title>
+    <title>Sponsors</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive,nofollow" />
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
@@ -12,7 +12,7 @@
 
 <body>
     <header>
-        <h1>Tournaments</h1>
+        <h1>Sponsors</h1>
     </header>
     <nav>
         <a href="index"> Home</a>
@@ -23,7 +23,7 @@
         <a href="sponsors"> Sponsors</a>
     </nav>
 <main>
-    <h2>Browse Tournaments</h2>
+    <h2>Browse Sponsors</h2>
     <table border =  "2" cellpadding = "5">
         <!-- Access data tuple passed from app.py --> 
             {% if data %}
@@ -51,8 +51,8 @@
                             {% endfor %}
 
                             <!-- Create our edit/delete buttons -->
-						    <td><a href="edit_player/{{item.tournamentID}}" class="btn btn-default">Edit</a></td>
-						    <td><a href="delete_player/{{item.tournamentID}}" class="btn btn-default">Delete</a></td>
+						    <td><a href="edit_player/{{item.sponsorID}}" class="btn btn-default">Edit</a></td>
+						    <td><a href="delete_player/{{item.sponsorID}}" class="btn btn-default">Delete</a></td>
 
 					    </tr> 
                     {% endfor %} 
@@ -60,13 +60,12 @@
     </table>
     <p>&nbsp;</p>
 
-    <form id="insertTournament" action="/tournaments" method="POST">
-        <legend><strong>Add Tournament</strong></legend>
+    <form id="insertSponsor" action="/sponsors" method="POST">
+        <legend><strong>Add Sponsor</strong></legend>
         <fieldset class="'field">
-            <label>Tournament Name</label> <input type="text" name="tournamentName" required>
-            <label>Location</label> <input type="text" name="location" required>
-            <label>Start Date<label> <input type="date" name="startDate">
-            <label>End Date</label> <input type="date" name="endDate">
+            <label>Sponsor Name</label> <input type="text" name="sponsorName" required>
+            <label>Contact Person</label> <input type="text" name="contactPerson" required>
+            <label>Contact Email<label> <input type="email" name="contactEmail">
         </fieldset>
-        <input class="btn" type="submit" id="addTournament" value="Add Tournament">
+        <input class="btn" type="submit" id="addSponsor" value="Add Sponsor">
     </form>
