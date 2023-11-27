@@ -34,6 +34,32 @@ mysql = MySQL(app)
 def home():
     return redirect("/players")
 
+@app.route("/tournaments", methods=["GET", "POST"])
+def tournaments():
+    if request.method == "POST":
+        # grab inputs from form
+        name = request.form["tournamentName"]
+        location = request.form["location"]
+        startDate = request.form["startDate"]
+        endDate = request.form["endDate"]
+
+        # query to insert form values into database
+        query = "INSERT INTO Tournaments (tournamentName, location, startDate, endDate) VALUES (%s, %s, %s, %s)"
+        cur = mysql.connection.cursor()
+        cur.execute(query, (name, location, startDate, endDate))
+        mysql.connection.commit()
+
+        # redirect back to tournament page
+        return redirect("/tournaments")
+
+    if request.method == "GET":
+        # mySQL query to grab all the tournaments
+        query = "SELECT Tournaments.tournamentID, Tournaments.tournamentName, Tournaments.location, Tournaments.startDate, Tournaments.endDate from Tournaments;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        return render_template("tournaments.j2", data=data)
 
 #route for teams page
 @app.route("/teams", methods=["GET", 'POST'])
@@ -72,7 +98,7 @@ def teams():
                 cur.execute(query, (teamName, location, sponsor, tournament, description))
                 mysql.connection.commit()
 
-            # redirect back to player page
+            # redirect back to teams page
             return redirect("/teams")
         
     if request.method == "GET":
