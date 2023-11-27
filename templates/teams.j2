@@ -4,13 +4,14 @@
 <!-- Citation for the following functions                               -->
 <!-- Adapted from the flask-starter-app > players.j2                -->
 <!-- Modified display texts, forms, variable names, and iterators to    --> 
-<!-- display and retrieve desired information for Players entity     -->
+<!-- display and retrieve desired information for Teams entity      -->
 <!-- Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app -->
+
 
 <head>
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Players</title>
+    <title>Teams</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive,nofollow" />
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
@@ -18,8 +19,9 @@
 </head>
 
 <body>
+<main>
     <header>
-        <h1>Players</h1>
+        <h1>Teams</h1>
     </header>
     <nav>
         <a href="index"> Home</a>
@@ -29,8 +31,7 @@
         <a href="players"> Players</a> 
         <a href="sponsors"> Sponsors</a>
     </nav>
-<main>
-    <h2>Browse Players</h2>
+    <h2>Browse Teams</h2>
     <table border =  "2" cellpadding = "5">
         <!-- Access data tuple passed from app.py --> 
             {% if data %}
@@ -58,8 +59,8 @@
                             {% endfor %}
 
                             <!-- Create our edit/delete buttons -->
-						    <td><a href="edit_player/{{item.playerID}}" class="btn btn-default">Edit</a></td>
-						    <td><a href="delete_player/{{item.playerID}}" class="btn btn-default">Delete</a></td>
+						    <td><a href="edit_team/{{item.teamID}}" class="btn btn-default">Edit</a></td>
+						    <td><a href="delete_team/{{item.teamID}}" class="btn btn-default">Delete</a></td>
 
 					    </tr> 
                     {% endfor %} 
@@ -68,31 +69,26 @@
 
 <p>&nbsp;</p>
 
-    <form id="insertPlayer" action="/players" method="POST">
-        <legend><strong>Add Player</strong></legend>
+    <form id="insertTeam" action="/teams" method="POST">
+        <legend><strong>Add Team</strong></legend>
         <fieldset class="'field">
-            <label>Player Name</label> <input type="text" name="name" id="name" required>
-            <label>Username</label> <input type="text" name="username" id="username" required>
-            <label>Birthdate</label> <input type="date" name="birthdate" id="birthdate" required>
-            <label>Captain</label> <select name="captain" id="captain">
-                <option value="0">No</option>
-                <option value="1">Yes</option>
-            </select>
-            <label>Team</label> <select name="team" id ="team">
-                    <option value="0"> None </option>
-                {% for item in teams %}
-                    <option value="{{item['teamID']}}">{{item['teamName']}}</option>
+            <label>Team Name</label> <input type="text" name="teamName" id="teamName" required>
+            <label>Location</label> <input type="text" name="location" id="location" required>
+            <label>Sponsor</label> <select name="sponsor" id="sponsor">
+                <option value="0"> None </option>
+                {% for item in sponsors %}
+                    <option value="{{item['sponsorID']}}">{{item['sponsorName']}}</option>
                 {% endfor %}
             </select>
-            <label>Preferred Game</label> <select name="game">
-                <option value="0">None</option>
-                {% for item in games %}
-                    <option value="{{item['gameID']}}">{{item['title']}}</option>
+            <label>Registered Tournament</label> <select name="tournament" id="tournament">
+                <option value="0"> None </option>
+                {% for item in tournaments %}
+                    <option value="{{item['tournamentID']}}">{{item['tournamentName']}}</option>
                 {% endfor %}
             </select>
+            <label>Description</label> <input type="text" name="description" required>
         </fieldset>
-        <input class="btn" type="submit" id="addPlayer" value="Add Player" name="addPlayer">
-    </form>
+        <input class="btn" type="submit" id="addTeam" value="Add Team" name="addTeam">
+    </form> 
 </main>
 </body>
-

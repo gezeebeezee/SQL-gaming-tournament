@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = ""
-app.config["MYSQL_PASSWORD"] = ""
-app.config["MYSQL_DB"] = ""
+app.config["MYSQL_USER"] = "cs340_vust"
+app.config["MYSQL_PASSWORD"] = "x62ZkepfILY7"
+app.config["MYSQL_DB"] = "cs340_vust"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -33,6 +33,73 @@ mysql = MySQL(app)
 @app.route('/')
 def home():
     return redirect("/players")
+
+
+#route for teams page
+@app.route("/teams", methods=["GET", 'POST'])
+def teams():
+    if request.method == "POST":
+        # grab inputs from form
+        if request.form.get("addTeam"):
+            teamName = request.form["teamName"]
+            location = request.form["location"]
+            sponsor = request.form["sponsor"]
+            tournament = request.form["tournament"]
+            description = request.form["description"]
+
+            # account for combinations of null sponsor or null tournament
+            if sponsor == "0" and tournament == "0":
+                query = "INSERT INTO Teams (teamName, location, description) VALUES (%s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, description))
+                mysql.connection.commit()
+
+            elif sponsor == "0":
+                query = "INSERT INTO Teams (teamName, location, tournamentID, description) VALUES (%s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, tournament, description))
+                mysql.connection.commit()
+
+            elif tournament == "0":
+                query = "INSERT INTO Teams (teamName, location, sponsorID, description) VALUES (%s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, sponsor, description))
+                mysql.connection.commit()
+
+            else:
+                query = "INSERT INTO Teams (teamName, location, sponsorID, tournamentID, description) VALUES (%s, %s, %s, %s, %s)"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, sponsor, tournament, description))
+                mysql.connection.commit()
+
+            # redirect back to player page
+            return redirect("/teams")
+        
+    if request.method == "GET":
+        # mySQL query to grab all the teams
+        query = "SELECT Teams.teamID, Teams.teamName, Teams.location, IFNULL(Sponsors.sponsorName, '*No Sponsor*') as sponsor, IFNULL(Tournaments.tournamentName, '*No Tournament*') as tournament, Teams.description FROM Teams LEFT JOIN Sponsors ON Sponsors.sponsorID = Teams.sponsorID LEFT JOIN Tournaments ON Tournaments.tournamentID = Teams.tournamentID;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        # mySQL query to grab team id/name data for our dropdown
+        query2 = "SELECT sponsorID, sponsorName FROM Sponsors"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        sponsors_data = cur.fetchall()
+
+        # mySQL query to grab game id/name data for our dropdown
+        query3 = "SELECT tournamentID, tournamentName FROM Tournaments"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        tournaments_data = cur.fetchall()
+
+        # send data to populate drop down boxes
+        return render_template("teams.j2", data=data, sponsors=sponsors_data, tournaments=tournaments_data)
+
+
+
+
 
 # route for players page
 # Citation for the following function
@@ -81,7 +148,7 @@ def players():
 
     if request.method == "GET":
         # mySQL query to grab all the players
-        query = "SELECT Players.playerID, Players.name, Players.username, Players.birthdate, Players.captain, IFNULL(Teams.teamName, '*No Team*') as Team, IFNULL(Games.title, '*No Game*') as Game FROM Players LEFT JOIN Teams ON Teams.teamID=Players.teamID LEFT JOIN Games ON Games.gameID=Players.gameID;"
+        query = "SELECT Players.playerID, Players.name, Players.username, Players.birthdate, Players.captain, IFNULL(Teams.teamName, '*No Team*') as team, IFNULL(Games.title, '*No Game*') as game FROM Players LEFT JOIN Teams ON Teams.teamID=Players.teamID LEFT JOIN Games ON Games.gameID=Players.gameID;"
         cur = mysql.connection.cursor()
         cur.execute(query)
         data = cur.fetchall()
