@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "cs340_vust"
-app.config["MYSQL_PASSWORD"] = "x62ZkepfILY7"
-app.config["MYSQL_DB"] = "cs340_vust"
+app.config["MYSQL_USER"] = ""
+app.config["MYSQL_PASSWORD"] = ""
+app.config["MYSQL_DB"] = ""
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -62,7 +62,7 @@ def sponsors():
 
 @app.route("/tournaments", methods=["GET", "POST"])
 def tournaments():
-    if request.method == "POST":
+    if request.method == "POST" and "tournamentName" in request.form:
         # grab inputs from form
         name = request.form["tournamentName"]
         location = request.form["location"]
@@ -77,6 +77,20 @@ def tournaments():
 
         # redirect back to tournament page
         return redirect("/tournaments")
+    
+    elif request.method == "POST" and "tournamentID" in request.form:
+        # grab inputs from form
+        tournament = request.form["tournamentID"]
+        game = request.form["gameID"]
+
+        # query to insert form values
+        query = "INSERT into Tournaments_has_Games (tournamentID, gameID) VALUES (%s, %s)"
+        cur = mysql.connection.cursor()
+        cur.execute(query, (tournament, game))
+        mysql.connection.commit()
+
+        # redirect back to tournament page
+        return redirect("/tournaments")
 
     if request.method == "GET":
         # mySQL query to grab all the tournaments
@@ -85,7 +99,19 @@ def tournaments():
         cur.execute(query)
         data = cur.fetchall()
 
-        return render_template("tournaments.j2", data=data)
+        # mySQL query to grab all the games
+        query = "SELECT Games.gameID, Games.title FROM Games;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        games = cur.fetchall()
+
+        # mySQL query to grab all the tournaments and their games
+        query = "SELECT Tournaments.tournamentID, Tournaments.tournamentName as 'Name', Games.gameID, Games.title as 'Title' FROM Tournaments INNER JOIN Tournaments_has_Games ON Tournaments.tournamentID = Tournaments_has_Games.tournamentID INNER JOIN Games ON Games.gameID = Tournaments_has_Games.gameID ORDER BY Tournaments.tournamentName ASC;"
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        intersection = cur.fetchall()
+
+        return render_template("tournaments.j2", data=data, intersection=intersection, games=games)
 
 @app.route("/games", methods=["GET", "POST"])
 def games():
