@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "cs340_vust"
-app.config["MYSQL_PASSWORD"] = "x62ZkepfILY7"
-app.config["MYSQL_DB"] = "cs340_vust"
+app.config["MYSQL_USER"] = "cs340_XXXXX"
+app.config["MYSQL_PASSWORD"] = ""
+app.config["MYSQL_DB"] = "cs340_XXXXX"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -335,7 +335,244 @@ def edit_player(id):
 
             # redirect back to players page after we execute the update query
             return redirect("/players")
+        
+# route for delete functionality
+# Citation for the following function
+# Adapted from flask-starter-app > bsg_people code
+# Modified variables and queries to fit requirements needed for Games table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/delete_game/<int:id>")
+def delete_game(id):
+    # mySQL query to delete the person with our passed id
+    query = "DELETE FROM Games WHERE gameID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
 
+    # redirect back to people page
+    return redirect("/games")
+
+# route for edit functionality
+# Citation for the following function
+# Adapted from flask-starter-app code
+# Modified variables and queries to select desired data from Players database
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/edit_game/<int:id>", methods=["POST", "GET"])
+def edit_game(id):
+    if request.method == "GET":
+        # mySQL query to grab the info of the player with passed id
+        query = "SELECT Games.gameID, Games.title, Games.genre, Games.platform FROM Games where gameID = %s" % (id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        # # mySQL query to grab team id/name data for our dropdown
+        # query2 = "SELECT teamID, teamName FROM Teams"
+        # cur = mysql.connection.cursor()
+        # cur.execute(query2)
+        # teams_data = cur.fetchall()
+
+        # #mysql query to grab game id/name data for dropdown
+        # query3 = "SELECT gameID, title FROM Games"
+        # cur = mysql.connection.cursor()
+        # cur.execute(query3)
+        # games_data = cur.fetchall()
+
+        # render edit_player page passing our query data, teams data, and games data to the edit_player template
+        return render_template("edit_game.j2", data=data)
+
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Player' button
+        if request.form.get("Edit_Game"):
+            # grab user form inputs
+            id = request.form["gameID"]
+            title = request.form["title"]
+            genre = request.form["genre"]
+            platform = request.form["platform"]
+            
+
+            # no null inputs allowed in Games
+            query = "UPDATE Games SET Games.title = %s, Games.genre = %s, Games.platform = %s WHERE Games.gameID = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (title, genre, platform, id))
+            mysql.connection.commit()
+
+            # redirect back to players page after we execute the update query
+            return redirect("/games")
+##############################
+
+
+
+
+# route for delete functionality
+# Citation for the following function
+# Adapted from flask-starter-app > bsg_people code
+# Modified variables and queries to fit requirements needed for Games table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/delete_team/<int:id>")
+def delete_team(id):
+    # mySQL query to delete the person with our passed id
+    query = "DELETE FROM Teams WHERE teamID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+
+    # redirect back to people page
+    return redirect("/teams")
+
+
+#########################################
+# ADD EDIT TEAMS
+
+# route for edit functionality
+# Citation for the following function
+# Adapted from flask-starter-app code
+# Modified variables and queries to select desired data from Players database
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/edit_team/<int:id>", methods=["POST", "GET"])
+def edit_team(id):
+    if request.method == "GET":
+        # mySQL query to grab the info of the player with passed id
+        query = "SELECT Teams.teamID, Teams.teamName, Teams.location, IFNULL(Sponsors.sponsorName, '*No Sponsor*') as sponsor, IFNULL(Tournaments.tournamentName, '*No Tournament*') as tournament, Teams.description FROM Teams LEFT JOIN Sponsors ON Sponsors.sponsorID=Teams.sponsorID LEFT JOIN Tournaments ON Tournaments.tournamentID=Teams.tournamentID WHERE teamID = %s" % (id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        # mySQL query to grab team id/name data for our dropdown
+        query2 = "SELECT sponsorID, sponsorName FROM Sponsors"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        sponsors_data = cur.fetchall()
+
+        #mysql query to grab game id/name data for dropdown
+        query3 = "SELECT tournamentID, tournamentName FROM Tournaments"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        tournaments_data = cur.fetchall()
+
+        # render edit_player page passing our query data, teams data, and games data to the edit_player template
+        return render_template("edit_team.j2", data=data, sponsors=sponsors_data, tournaments=tournaments_data)
+
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Player' button
+        if request.form.get("Edit_Team"):
+            # grab user form inputs
+            id = request.form["teamID"]
+            teamName = request.form["teamName"]
+            location = request.form["location"]
+            sponsor = request.form["sponsor"]
+            tournament = request.form["tournament"]
+            description = request.form["description"]
+
+            # account for null sponsor, tournament, and description
+            if (sponsor == "0") and (tournament == "0") and (description == "0"):
+                # mySQL query to update the attributes of person with our passed id value
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = NULL, Teams.tournamentID = NULL, Teams.description = NULL  WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, id))
+                mysql.connection.commit()
+
+            # account for null tournament and description
+            elif (tournament == "0") and (description == "0"):
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = %s, Teams.tournamentID = NULL, Teams.description = NULL WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, sponsor, id))
+                mysql.connection.commit()
+
+            # account for null sponsor and description
+            elif (sponsor == "0") and (description == "0"):
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = NULL, Teams.tournamentID = %s, Teams.description = NULL WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, tournament, id))
+                mysql.connection.commit()
+
+
+            # account for null sponsor and tournament
+            elif (sponsor == "0") and (tournament == "0"):
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = NULL, Teams.tournamentID = NULL, Teams.description = %s WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, description, id))
+                mysql.connection.commit()
+
+
+            # account for null tournament
+            elif (tournament == "0"):
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = %s, Teams.tournamentID = NULL, Teams.description = %s WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, sponsor, description, id))
+                mysql.connection.commit()
+
+
+            # account for null sponsor
+            elif (sponsor == "0"):
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = NULL, Teams.tournamentID = %s, Teams.description = %s WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, tournament, description, id))
+                mysql.connection.commit()
+
+
+            # account for null description
+            elif (description == "0"):
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = %s, Teams.tournamentID = %s, Teams.description = NULL WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, sponsor, tournament, id))
+                mysql.connection.commit()
+
+            # no null inputs
+            else:
+                query = "UPDATE Teams SET Teams.teamName = %s, Teams.location = %s, Teams.sponsorID = %s, Teams.tournamentID = %s, Teams.description = %s WHERE Teams.teamID = %s"
+                cur = mysql.connection.cursor()
+                cur.execute(query, (teamName, location, sponsor, tournament, description, id))
+                mysql.connection.commit()
+
+            # redirect back to players page after we execute the update query
+            return redirect("/teams")
+#########################################
+
+
+
+
+# route for delete functionality
+# Citation for the following function
+# Adapted from flask-starter-app > bsg_people code
+# Modified variables and queries to fit requirements needed for Games table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/delete_sponsor/<int:id>")
+def delete_sponsor(id):
+    # mySQL query to delete the person with our passed id
+    query = "DELETE FROM Sponsors WHERE sponsorID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+
+    # redirect back to people page
+    return redirect("/sponsors")
+
+
+#################################################
+# ADD EDIT SPONSOR
+#################################################
+
+
+
+
+# route for delete functionality
+# Citation for the following function
+# Adapted from flask-starter-app > bsg_people code
+# Modified variables and queries to fit requirements needed for Games table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/delete_tournament/<int:id>")
+def delete_tournament(id):
+    # mySQL query to delete the person with our passed id
+    query = "DELETE FROM Tournaments WHERE tournamentID = '%s';"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+
+    # redirect back to people page
+    return redirect("/tournaments")
 
 # Listener
 if __name__ == "__main__":

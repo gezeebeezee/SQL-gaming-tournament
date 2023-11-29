@@ -55,7 +55,7 @@ CREATE OR REPLACE TABLE Teams (
   location varchar(45) NOT NULL,
   sponsorID int,
   tournamentID int,
-  Description varchar(100) DEFAULT NULL,
+  description varchar(100) DEFAULT NULL,
   PRIMARY KEY (teamID),
   FOREIGN KEY (sponsorID) REFERENCES Sponsors(sponsorID)
     ON DELETE SET NULL,

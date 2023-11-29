@@ -12,7 +12,7 @@
 
 <body>
     <div>
-        <table border="1" cellpadding="5"> 
+        <table border="2" cellpadding="5"> 
             <caption> Editing Player: </caption>
             <!-- Access data tuple passed from app.py -->
             {% if data %}
@@ -48,7 +48,7 @@
             <legend><strong>Edit Player</strong></legend>
             <fieldset>
             <input type="hidden" value="{{data[0].playerID}}" class="form-control" id="playerID" name="playerID" required>
-                <label>Player Name:</label> <input type="text" name="name" id="name" value="{{data[0].name}}" required>
+                <label>Player Name</label> <input type="text" name="name" id="name" value="{{data[0].name}}" required>
                 <label>Username</label> <input type="text" name="username" id="username" value="{{data[0].username}}" required>
                 <label>Birthdate</label> <input type="date" name="birthdate" id="birthdate" value="{{data[0].birthdate}}" required>
                 <label>Captain</label> <select name="captain" id="captain">

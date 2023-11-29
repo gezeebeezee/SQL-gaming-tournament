@@ -1,0 +1,81 @@
+<html>
+
+<!-- Citation for the following functions -->
+<!-- Adapted from the flask-starter-app > edit_people.j2 -->
+<!-- Modified variable names and iterators to retrieve desired information for Players database -->
+<!-- Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app -->
+
+<head>
+	<title>Edit Teams</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <table border="2" cellpadding="5"> 
+            <caption> Editing Team: </caption>
+            <!-- Access data tuple passed from app.py -->
+            {% if data %}
+                <thead>
+                    <tr>
+                        <!-- Iterate through each key in the first entry to get the column name -->
+                        {% for key in data[0].keys() %}
+
+                        <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                        
+                        <!-- End of this for loop -->
+                        {% endfor %} 
+                    </tr>
+
+                <tbody>
+                    <!-- Now, iterate through every item in data -->
+                    {% for item in data %}
+                    <tr>
+                        <!-- Then iterate through every key in the current item dictionary -->
+                        {% for key in item.keys() %}
+                        
+                        <!-- Create a <td> element with the value of that key in it -->
+                        <td>{{item[key]}}</td> {% endfor %} 
+                    </tr> 
+                    {% endfor %} 
+            {% endif %} 
+        </table>
+
+    <div id="edit">
+        <!-- form to edit data in Teams-->
+        <form id="editTeam" method="post">
+            <legend><strong>Edit Team</strong></legend>
+            <fieldset>
+            <input type="hidden" value="{{data[0].teamID}}" class="form-control" id="teamID" name="teamID" required>
+                <label>Team Name</label> <input type="text" name="teamName" id="teamName" value="{{data[0].teamName}}" required>
+                <label>Location</label> <input type="text" name="location" id="location" value="{{data[0].location}}" required>
+                <label>Sponsor</label> <select name="sponsor" id ="sponsor" placeholder="" required>
+                    <option value="0"> None </option>
+                    {% for sponsor in sponsors %}
+                        {% if sponsor['sponsorName'] == data[0].sponsor %}
+                            <option value="{{sponsor['sponsorID']}}" selected> {{sponsor['sponsorName']}} </option>
+                        {% else %}
+                            <option value="{{sponsor['sponsorID']}}"> {{sponsor['sponsorName']}} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                
+                <label>Tournament</label> <select name="tournament" id ="tournament" placeholder="" required>
+                    <option value="0"> None </option>
+                    {% for tournament in tournaments %}
+                        {% if tournament['tournamentName'] == data[0].tournament %}
+                            <option value="{{tournament['tournamentID']}}" selected> {{tournament['tournamentName']}} </option>
+                        {% else %}
+                            <option value="{{tournament['tournamentID']}}"> {{tournament['tournamentName']}} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <label>Description</label> <input type="text" name="description" id="description" value="{{data[0].description}}" required>
+            </fieldset>
+            <input type="submit" value="Edit Team" name="Edit_Team" class="btn btn-primary" style="margin:.5rem;">
+            <a href='/teams'><input class="btn" type="button" value="Cancel"></a> 
+        </form>
+    </div><!--edit-->
+
+</body>
