@@ -30,6 +30,13 @@ SELECT Games.gameID, Games.title, Games.genre, Games.platform from Games;
 -- get all Sponsors information
 SELECT Sponsors.sponsorID, Sponsors.sponsorName, Sponsors.contactPerson, Sponsors.contactEmail from Sponsors;
 
+-- get all Tournaments_Has_Games information
+SELECT Tournaments.tournamentName, Games.title 
+FROM Tournaments 
+INNER JOIN Tournaments_has_Games ON Tournaments.tournamentID = Tournaments_has_Games.tournamentID
+INNER JOIN Games ON Games.gameID = Tournaments_has_Games.gameID
+ORDER BY Tournaments.tournamentName ASC;
+
 
 ----- INSERTS -----
 -- add a new Tournament

@@ -70,3 +70,58 @@
         </fieldset>
         <input class="btn" type="submit" id="addTournament" value="Add Tournament">
     </form>
+
+    <h2>Browse Games at Tournaments</h2>
+    <table border =  "2" cellpadding = "5">
+        <!-- Access data tuple passed from app.py --> 
+                {% if intersection %}
+                    <thead>
+                        <tr>
+                            <!-- Iterate through each key in the first entry to get the column name -->
+                            {% for key in intersection[0].keys() %}
+                            
+                            <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+                            <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                        
+                            <!-- End of this for loop -->
+                            {% endfor %} 
+                        </tr>
+
+                    <tbody>
+                        <!-- Now, iterate through every item in data -->
+                        {% for item in intersection %}
+                            <tr>
+                                <!-- Then iterate through every key in the current item dictionary -->
+                                {% for key in item.keys() %}
+
+                                <!-- Create a <td> element with the value of that key in it -->
+                                <td> {{item[key]}} </td> 
+                                {% endfor %}
+
+                                <!-- Create our edit/delete buttons -->
+                                <td><a href="edit_player/{{item.tournamentID}}" class="btn btn-default">Edit</a></td>
+                                <td><a href="delete_player/{{item.tournamentID}}" class="btn btn-default">Delete</a></td>
+
+                            </tr> 
+                        {% endfor %} 
+                {% endif %}  
+    </table>
+<p>&nbsp;</p>
+
+    <form id="insertTournament_Has_Games" action="/tournaments" method="POST">
+        <legend><strong>Add Tournament Games</strong></legend>
+        <fieldset class="'field">
+            <label>Tournament Name</label> <select name="tournamentID">
+                {% for item in data %}
+                    <option value="{{item['tournamentID']}}">{{item['tournamentName']}}</option>
+                {% endfor %}
+            </select>
+            
+            <label>Game Title</label> <select name="gameID">
+                {% for item in games %}
+                    <option value="{{item['gameID']}}">{{item['title']}}</option>
+                {% endfor %}
+            </select>
+        </fieldset>
+        <input class="btn" type="submit" id="addTournamentsGames" value="Add Game to Tournament">
+    </form>
