@@ -50,7 +50,6 @@
             <input type="hidden" value="{{data[0].gameID}}" class="form-control" id="gameID"  required>
             <input type="hidden" value="{{data[0].tournamentID}}" class="form-control" id="tournamentID" required>
             <label>Tournament</label> <select name="tournamentID" placeholder="" required>
-                    <option value="0"> None </option>
                     {% for item in tournaments %}
                         {% if item['tournamentName'] == data[0].tournamentName %}
                             <option value="{{item['tournamentID']}}" selected> {{item['tournamentName']}} </option>
@@ -60,7 +59,6 @@
                     {% endfor %}
                 </select>
             <label>Game</label> <select name="gameID" placeholder="" required>
-                    <option value="0"> None </option>
                     {% for item in games %}
                         {% if item['title'] == data[0].title %}
                             <option value="{{item['gameID']}}" selected> {{item['title']}} </option>
