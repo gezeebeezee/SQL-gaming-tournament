@@ -608,7 +608,7 @@ def delete_tournament(id):
 # Adapted from flask-starter-app > bsg_people code
 # Modified variables and queries to fit requirements needed for Games table
 # Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
-@app.route("/delete_tournament_game")
+@app.route("/delete_tournament_game", methods=["POST"])
 def delete_tournament_game():
 
     # grab hidden inputs
