@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "cs340_lekevinp"
-app.config["MYSQL_PASSWORD"] = "5695"
-app.config["MYSQL_DB"] = "cs340_lekevinp"
+app.config["MYSQL_USER"] = ""
+app.config["MYSQL_PASSWORD"] = ""
+app.config["MYSQL_DB"] = ""
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -106,7 +106,7 @@ def tournaments():
         games = cur.fetchall()
 
         # mySQL query to grab all the tournaments and their games
-        query = "SELECT Tournaments.tournamentID, Tournaments.tournamentName as 'Name', Games.gameID, Games.title as 'Title' FROM Tournaments INNER JOIN Tournaments_has_Games ON Tournaments.tournamentID = Tournaments_has_Games.tournamentID INNER JOIN Games ON Games.gameID = Tournaments_has_Games.gameID ORDER BY Tournaments.tournamentName ASC;"
+        query = "SELECT Tournaments.tournamentID, Tournaments.tournamentName as 'Name', Games.gameID, Games.title as 'Title' FROM Tournaments INNER JOIN Tournaments_has_Games ON Tournaments.tournamentID = Tournaments_has_Games.tournamentID INNER JOIN Games ON Games.gameID = Tournaments_has_Games.gameID ORDER BY Tournaments.tournamentID ASC;"
         cur = mysql.connection.cursor()
         cur.execute(query)
         intersection = cur.fetchall()
@@ -630,17 +630,13 @@ def delete_tournament_game():
 # Adapted from flask-starter-app code
 # Modified variables and queries to select desired data from Players database
 # Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
-@app.route("/edit_tournament_game/<int:id>", methods=["POST", "GET"])
-def edit_tournament_game(id):
+@app.route("/edit_tournament_game/<int:id><int:id2>", methods=["POST", "GET"])
+def edit_tournament_game(id, id2):
     if request.method == "GET":
         # mySQL query to grab the info of the player with passed id
-        str_id = str(id)
-        num_list = [int(n) for n in str_id]
-        gameID = num_list[0]
-        tournamentID = num_list[1]
         cur = mysql.connection.cursor()
         query = "SELECT Tournaments.tournamentID, Tournaments.tournamentName, Games.gameID, Games.title FROM Tournaments INNER JOIN Tournaments_has_Games ON Tournaments.tournamentID = Tournaments_has_Games.tournamentID INNER JOIN Games ON Games.gameID = Tournaments_has_Games.gameID WHERE Tournaments_has_Games.gameID = %s AND Tournaments_has_Games.tournamentID = %s"
-        cur.execute(query, (gameID, tournamentID))
+        cur.execute(query, (id, id2))
         data = cur.fetchall()
 
         ## mySQL query to grab team id/name data for our dropdown
@@ -661,18 +657,14 @@ def edit_tournament_game(id):
     # meat and potatoes of our update functionality
     if request.method == "POST":
         # fire off if user clicks the 'Edit Player' button
-        if request.form.get("Edit_Game"):
+        if request.form.get("Edit_Tournament_Game"):
             # grab user form inputs
-            id = request.form["gameID"]
-            title = request.form["title"]
-            genre = request.form["genre"]
-            platform = request.form["platform"]
-            
+            tournamentID = request.form["tournamentID"]
+            gameID = request.form["gameID"]
 
-            # no null inputs allowed in Games
-            query = "UPDATE Games SET Games.title = %s, Games.genre = %s, Games.platform = %s WHERE Games.gameID = %s"
+            query = "UPDATE Tournaments_has_Games SET tournamentID = %s, gameID = %s WHERE tournamentID = %s and gameID = %s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (title, genre, platform, id))
+            cur.execute(query, (tournamentID, gameID, id2, id))
             mysql.connection.commit()
 
             # redirect back to players page after we execute the update query

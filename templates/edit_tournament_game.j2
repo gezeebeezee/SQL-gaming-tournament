@@ -33,7 +33,7 @@
                     {% for item in data %}
                     <tr>
                         <!-- Then iterate through every key in the current item dictionary -->
-                        {% for key in data.keys() %}
+                        {% for key in item.keys() %}
                         
                         <!-- Create a <td> element with the value of that key in it -->
                         <td>{{item[key]}}</td> {% endfor %} 
@@ -47,25 +47,25 @@
         <form id="editTournamentGame" method="post">
             <legend><strong>Edit Tournament Game</strong></legend>
             <fieldset>
-            <input type="hidden" value="{{data[0].gameID}}" class="form-control" id="gameID" name="gameID" required>
-            <input type="hidden" value="{{data[0].tournamentID}}" class="form-control" id="tournamentID" name="tournamentID" required>
-            <label>Game</label> <select name="game" placeholder="" required>
-                    <option value="0"> None </option>
-                    {% for item in games %}
-                        {% if item['title'] == data[0].game %}
-                            <option value="{{item['gameID']}}" selected> {{item['title']}} </option>
-                        {% else %}
-                            <option value="{{item['gameID']}}"> {{item['title']}} </option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-            <label>Tournament</label> <select name="tournament" placeholder="" required>
+            <input type="hidden" value="{{data[0].gameID}}" class="form-control" id="gameID"  required>
+            <input type="hidden" value="{{data[0].tournamentID}}" class="form-control" id="tournamentID" required>
+            <label>Tournament</label> <select name="tournamentID" placeholder="" required>
                     <option value="0"> None </option>
                     {% for item in tournaments %}
-                        {% if item['tournamentName'] == data[0].tournament %}
+                        {% if item['tournamentName'] == data[0].tournamentName %}
                             <option value="{{item['tournamentID']}}" selected> {{item['tournamentName']}} </option>
                         {% else %}
                             <option value="{{item['tournamentID']}}"> {{item['tournamentName']}} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            <label>Game</label> <select name="gameID" placeholder="" required>
+                    <option value="0"> None </option>
+                    {% for item in games %}
+                        {% if item['title'] == data[0].title %}
+                            <option value="{{item['gameID']}}" selected> {{item['title']}} </option>
+                        {% else %}
+                            <option value="{{item['gameID']}}"> {{item['title']}} </option>
                         {% endif %}
                     {% endfor %}
                 </select>
