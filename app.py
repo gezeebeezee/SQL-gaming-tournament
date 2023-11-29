@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "cs340_lekevinp"
-app.config["MYSQL_PASSWORD"] = "5695"
-app.config["MYSQL_DB"] = "cs340_lekevinp"
+app.config["MYSQL_USER"] = ""
+app.config["MYSQL_PASSWORD"] = ""
+app.config["MYSQL_DB"] = ""
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -602,13 +602,36 @@ def delete_tournament(id):
 
 
 
+
+# route for delete functionality
+# Citation for the following function
+# Adapted from flask-starter-app > bsg_people code
+# Modified variables and queries to fit requirements needed for Games table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/delete_tournament_game")
+def delete_tournament_game():
+
+    # grab hidden inputs
+    gameID = request.form["gameID"]
+    tournamentID = request.form["tournamentID"]
+
+    # mySQL query to delete the person with our passed id
+    query = "DELETE FROM Tournaments_has_Games WHERE Tournaments_has_Games.gameID = %s AND Tournaments_has_Games.tournamentID = %s;"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (gameID, tournamentID))
+    mysql.connection.commit()
+
+    # redirect back to people page
+    return redirect("/tournaments")
+
+
 # route for edit functionality
 # Citation for the following function
 # Adapted from flask-starter-app code
 # Modified variables and queries to select desired data from Players database
 # Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
-@app.route("/edit_game_tournament/<int:id>", methods=["POST", "GET"])
-def edit_game_tournament(id):
+@app.route("/edit_tournament_game/<int:id>", methods=["POST", "GET"])
+def edit_tournament_game(id):
     if request.method == "GET":
         # mySQL query to grab the info of the player with passed id
         id = str(id)
