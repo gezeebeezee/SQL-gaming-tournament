@@ -1,0 +1,79 @@
+<html>
+
+<!-- Citation for the following functions -->
+<!-- Adapted from the flask-starter-app > edit_people.j2 -->
+<!-- Modified variable names and iterators to retrieve desired information for Players database -->
+<!-- Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app -->
+
+<head>
+	<title>Edit Game</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div>
+        <table border="2" cellpadding="5"> 
+            <caption> Editing Game-Tournament: </caption>
+            <!-- Access data tuple passed from app.py -->
+            {% if intersection %}
+                <thead>
+                    <tr>
+                        <!-- Iterate through every key in the first entry to get the column name -->
+                        {% for key in intersection[0].keys() %}
+
+                        <!-- Create a <th> tag with the key inside of it, this will be our header row -->
+                        <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
+                        
+                        <!-- End of this for loop -->
+                        {% endfor %} 
+                    </tr>
+
+                <tbody>
+                    <!-- Now, iterate through every item in data -->
+                    {% for item in intersection %}
+                    <tr>
+                        <!-- Then iterate through every key in the current item dictionary -->
+                        {% for key in item.keys() %}
+                        
+                        <!-- Create a <td> element with the value of that key in it -->
+                        <td>{{item[key]}}</td> {% endfor %} 
+                    </tr> 
+                    {% endfor %} 
+            {% endif %} 
+        </table>
+
+    <div id="edit">
+        <!-- form to edit data in Games-->
+        <form id="editGame" method="post">
+            <legend><strong>Edit Game</strong></legend>
+            <fieldset>
+            <input type="hidden" value="{{data[0].gameID}}" class="form-control" id="gameID" name="gameID" required>
+            <input type="hidden" value="{{data[0].tournamentID}}" class="form-control" id="tournamentID" name="tournamentID" required>
+            <label>Game</label> <select name="game" placeholder="" required>
+                    <option value="0"> None </option>
+                    {% for item in games %}
+                        {% if item['title'] == data[0].game %}
+                            <option value="{{item['gameID']}}" selected> {{item['title']}} </option>
+                        {% else %}
+                            <option value="{{item['gameID']}}"> {{item['title']}} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            <label>Tournament</label> <select name="tournament" placeholder="" required>
+                    <option value="0"> None </option>
+                    {% for item in tournaments %}
+                        {% if item['tournamentName'] == data[0].tournament %}
+                            <option value="{{item['tournamentID']}}" selected> {{item['tournamentName']}} </option>
+                        {% else %}
+                            <option value="{{item['tournamentID']}}"> {{item['tournamentName']}} </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+
+            </fieldset>
+            <input type="submit" value="Edit Game" name="Edit_Game" class="btn btn-primary" style="margin:.5rem;">
+            <a href='/games'><input class="btn" type="button" value="Cancel"></a> 
+        </form>
+    </div><!--edit-->
+
+</body>

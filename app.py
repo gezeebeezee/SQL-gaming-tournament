@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = ""
-app.config["MYSQL_PASSWORD"] = ""
-app.config["MYSQL_DB"] = ""
+app.config["MYSQL_USER"] = "cs340_lekevinp"
+app.config["MYSQL_PASSWORD"] = "5695"
+app.config["MYSQL_DB"] = "cs340_lekevinp"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -599,6 +599,61 @@ def delete_tournament(id):
 
     # redirect back to people page
     return redirect("/tournaments")
+
+
+
+# route for edit functionality
+# Citation for the following function
+# Adapted from flask-starter-app code
+# Modified variables and queries to select desired data from Players database
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/edit_game_tournament/<int:id>", methods=["POST", "GET"])
+def edit_game_tournament(id):
+    if request.method == "GET":
+        # mySQL query to grab the info of the player with passed id
+        id = str(id)
+        num_list = [int(n) for n in id]
+        gameID = num_list[0]
+        tournamentID = num_list[1]
+        query = "SELECT Games.gameID, Games.title, Games.genre, Games.platform FROM Games where gameID = %s" % (id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        # # mySQL query to grab team id/name data for our dropdown
+        # query2 = "SELECT teamID, teamName FROM Teams"
+        # cur = mysql.connection.cursor()
+        # cur.execute(query2)
+        # teams_data = cur.fetchall()
+
+        # #mysql query to grab game id/name data for dropdown
+        # query3 = "SELECT gameID, title FROM Games"
+        # cur = mysql.connection.cursor()
+        # cur.execute(query3)
+        # games_data = cur.fetchall()
+
+        # render edit_player page passing our query data, teams data, and games data to the edit_player template
+        return render_template("edit_game_tournament.j2", data=data)
+
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Player' button
+        if request.form.get("Edit_Game"):
+            # grab user form inputs
+            id = request.form["gameID"]
+            title = request.form["title"]
+            genre = request.form["genre"]
+            platform = request.form["platform"]
+            
+
+            # no null inputs allowed in Games
+            query = "UPDATE Games SET Games.title = %s, Games.genre = %s, Games.platform = %s WHERE Games.gameID = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (title, genre, platform, id))
+            mysql.connection.commit()
+
+            # redirect back to players page after we execute the update query
+            return redirect("/tournaments")
 
 # Listener
 if __name__ == "__main__":
