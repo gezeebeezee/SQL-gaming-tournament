@@ -15,11 +15,11 @@
         <table border="2" cellpadding="5"> 
             <caption> Editing Game-Tournament: </caption>
             <!-- Access data tuple passed from app.py -->
-            {% if intersection %}
+            {% if data %}
                 <thead>
                     <tr>
                         <!-- Iterate through every key in the first entry to get the column name -->
-                        {% for key in intersection[0].keys() %}
+                        {% for key in data[0].keys() %}
 
                         <!-- Create a <th> tag with the key inside of it, this will be our header row -->
                         <th scope="col" data-field="{{ key }}" data-filter-control="input">{{ key }}</th>
@@ -30,10 +30,10 @@
 
                 <tbody>
                     <!-- Now, iterate through every item in data -->
-                    {% for item in intersection %}
+                    {% for item in data %}
                     <tr>
                         <!-- Then iterate through every key in the current item dictionary -->
-                        {% for key in item.keys() %}
+                        {% for key in data.keys() %}
                         
                         <!-- Create a <td> element with the value of that key in it -->
                         <td>{{item[key]}}</td> {% endfor %} 
@@ -44,8 +44,8 @@
 
     <div id="edit">
         <!-- form to edit data in Games-->
-        <form id="editGame" method="post">
-            <legend><strong>Edit Game</strong></legend>
+        <form id="editTournamentGame" method="post">
+            <legend><strong>Edit Tournament Game</strong></legend>
             <fieldset>
             <input type="hidden" value="{{data[0].gameID}}" class="form-control" id="gameID" name="gameID" required>
             <input type="hidden" value="{{data[0].tournamentID}}" class="form-control" id="tournamentID" name="tournamentID" required>
@@ -71,8 +71,8 @@
                 </select>
 
             </fieldset>
-            <input type="submit" value="Edit Game" name="Edit_Game" class="btn btn-primary" style="margin:.5rem;">
-            <a href='/games'><input class="btn" type="button" value="Cancel"></a> 
+            <input type="submit" value="Edit Tournament-Game" name="Edit_Tournament_Game" class="btn btn-primary" style="margin:.5rem;">
+            <a href='/tournaments'><input class="btn" type="button" value="Cancel"></a> 
         </form>
     </div><!--edit-->
 

@@ -634,29 +634,29 @@ def delete_tournament_game():
 def edit_tournament_game(id):
     if request.method == "GET":
         # mySQL query to grab the info of the player with passed id
-        id = str(id)
-        num_list = [int(n) for n in id]
+        str_id = str(id)
+        num_list = [int(n) for n in str_id]
         gameID = num_list[0]
         tournamentID = num_list[1]
-        query = "SELECT Games.gameID, Games.title, Games.genre, Games.platform FROM Games where gameID = %s" % (id)
         cur = mysql.connection.cursor()
-        cur.execute(query)
+        query = "SELECT Tournaments.tournamentID, Tournaments.tournamentName, Games.gameID, Games.title FROM Tournaments INNER JOIN Tournaments_has_Games ON Tournaments.tournamentID = Tournaments_has_Games.tournamentID INNER JOIN Games ON Games.gameID = Tournaments_has_Games.gameID WHERE Tournaments_has_Games.gameID = %s AND Tournaments_has_Games.tournamentID = %s"
+        cur.execute(query, (gameID, tournamentID))
         data = cur.fetchall()
 
-        # # mySQL query to grab team id/name data for our dropdown
-        # query2 = "SELECT teamID, teamName FROM Teams"
-        # cur = mysql.connection.cursor()
-        # cur.execute(query2)
-        # teams_data = cur.fetchall()
+        ## mySQL query to grab team id/name data for our dropdown
+        query2 = "SELECT gameID, title FROM Games"
+        cur = mysql.connection.cursor()
+        cur.execute(query2)
+        games_data = cur.fetchall()
 
-        # #mysql query to grab game id/name data for dropdown
-        # query3 = "SELECT gameID, title FROM Games"
-        # cur = mysql.connection.cursor()
-        # cur.execute(query3)
-        # games_data = cur.fetchall()
+        #mysql query to grab game id/name data for dropdown
+        query3 = "SELECT tournamentID, tournamentName FROM Tournaments"
+        cur = mysql.connection.cursor()
+        cur.execute(query3)
+        tournaments_data = cur.fetchall()
 
         # render edit_player page passing our query data, teams data, and games data to the edit_player template
-        return render_template("edit_game_tournament.j2", data=data)
+        return render_template("edit_tournament_game.j2", data=data, games=games_data, tournaments=tournaments_data)
 
     # meat and potatoes of our update functionality
     if request.method == "POST":
