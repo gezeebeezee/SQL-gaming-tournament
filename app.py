@@ -17,7 +17,7 @@ app = Flask(__name__)
 # app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 # database connection info
-app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
+app.config["MYSQL_HOST"] = ""
 app.config["MYSQL_USER"] = ""
 app.config["MYSQL_PASSWORD"] = ""
 app.config["MYSQL_DB"] = ""
@@ -28,12 +28,18 @@ mysql = MySQL(app)
 
 # Routes
 
-# have homepage route to /people by default for convenience, 
+# have homepage route to /tournaments by default for convenience, 
 # generally this will be your home route with its own template
 @app.route('/')
 def home():
-    return redirect("/players")
+    return redirect("/tournaments")
 
+
+# route for sponsors page
+# Citation for the following function
+# Adapted from cs340-flask-starter-app
+# Modified variables and queries to fit requirements needed for our Sponsors table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
 @app.route("/sponsors", methods=["GET", "POST"])
 def sponsors():
     if request.method == "POST":
@@ -60,6 +66,12 @@ def sponsors():
 
         return render_template("sponsors.j2", data=data)
 
+
+# route for tournaments page
+# Citation for the following function
+# Adapted from cs340-flask-starter-app
+# Modified variables and queries to fit requirements needed for our Tournaments table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
 @app.route("/tournaments", methods=["GET", "POST"])
 def tournaments():
     if request.method == "POST" and "tournamentName" in request.form:
@@ -113,6 +125,12 @@ def tournaments():
 
         return render_template("tournaments.j2", data=data, intersection=intersection, games=games)
 
+
+# route for games page
+# Citation for the following function
+# Adapted from cs340-flask-starter-app
+# Modified variables and queries to fit requirements needed for our Games table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
 @app.route("/games", methods=["GET", "POST"])
 def games():
     if request.method == "POST":
@@ -139,7 +157,13 @@ def games():
 
         return render_template("games.j2", data=data)
 
-#route for teams page
+
+
+# route for teams page
+# Citation for the following function
+# Adapted from cs340-flask-starter-app
+# Modified variables and queries to fit requirements needed for our Teams table
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
 @app.route("/teams", methods=["GET", 'POST'])
 def teams():
     if request.method == "POST":
@@ -392,18 +416,6 @@ def edit_game(id):
         cur.execute(query)
         data = cur.fetchall()
 
-        # # mySQL query to grab team id/name data for our dropdown
-        # query2 = "SELECT teamID, teamName FROM Teams"
-        # cur = mysql.connection.cursor()
-        # cur.execute(query2)
-        # teams_data = cur.fetchall()
-
-        # #mysql query to grab game id/name data for dropdown
-        # query3 = "SELECT gameID, title FROM Games"
-        # cur = mysql.connection.cursor()
-        # cur.execute(query3)
-        # games_data = cur.fetchall()
-
         # render edit_player page passing our query data, teams data, and games data to the edit_player template
         return render_template("edit_game.j2", data=data)
 
@@ -577,11 +589,42 @@ def delete_sponsor(id):
     return redirect("/sponsors")
 
 
-#################################################
-# ADD EDIT SPONSOR
-#################################################
+# route for edit functionality
+# Citation for the following function
+# Adapted from flask-starter-app code
+# Modified variables and queries to select desired data from Players database
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/edit_sponsor/<int:id>", methods=["POST", "GET"])
+def edit_sponsor(id):
+    if request.method == "GET":
+        # mySQL query to grab the info of the player with passed id
+        query = "SELECT Sponsors.sponsorID, Sponsors.sponsorName, Sponsors.contactPerson, Sponsors.contactEmail FROM Sponsors where sponsorID = %s" % (id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
 
+        # render edit_player page passing our query data, teams data, and games data to the edit_player template
+        return render_template("edit_sponsor.j2", data=data)
 
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Player' button
+        if request.form.get("Edit_Sponsor"):
+            # grab user form inputs
+            id = request.form["sponsorID"]
+            name = request.form["sponsorName"]
+            contactPerson = request.form["contactPerson"]
+            email = request.form["contactEmail"]
+            
+
+            # no null inputs allowed in Tournaments
+            query = "UPDATE Sponsors SET Sponsors.sponsorName = %s, Sponsors.contactPerson = %s, Sponsors.contactEmail = %s WHERE Sponsors.sponsorID = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (name, contactPerson, email, id))
+            mysql.connection.commit()
+
+            # redirect back to players page after we execute the update query
+            return redirect("/sponsors")
 
 
 # route for delete functionality
@@ -601,6 +644,43 @@ def delete_tournament(id):
     return redirect("/tournaments")
 
 
+# route for edit functionality
+# Citation for the following function
+# Adapted from flask-starter-app code
+# Modified variables and queries to select desired data from Players database
+# Source URL: https://github.com/osu-cs340-ecampus/flask-starter-app
+@app.route("/edit_tournament/<int:id>", methods=["POST", "GET"])
+def edit_tournament(id):
+    if request.method == "GET":
+        # mySQL query to grab the info of the player with passed id
+        query = "SELECT Tournaments.tournamentID, Tournaments.tournamentName, Tournaments.location, Tournaments.startDate, Tournaments.endDate FROM Tournaments where tournamentID = %s" % (id)
+        cur = mysql.connection.cursor()
+        cur.execute(query)
+        data = cur.fetchall()
+
+        # render edit_player page passing our query data, teams data, and games data to the edit_player template
+        return render_template("edit_tournament.j2", data=data)
+
+    # meat and potatoes of our update functionality
+    if request.method == "POST":
+        # fire off if user clicks the 'Edit Player' button
+        if request.form.get("Edit_Tournament"):
+            # grab user form inputs
+            id = request.form["tournamentID"]
+            name = request.form["tournamentName"]
+            location = request.form["location"]
+            startDate = request.form["startDate"]
+            endDate = request.form["endDate"]
+            
+
+            # no null inputs allowed in Tournaments
+            query = "UPDATE Tournaments SET Tournaments.tournamentName = %s, Tournaments.location = %s, Tournaments.startDate = %s, Tournaments.endDate = %s WHERE Tournaments.tournamentID = %s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (name, location, startDate, endDate, id))
+            mysql.connection.commit()
+
+            # redirect back to players page after we execute the update query
+            return redirect("/tournaments")
 
 
 # route for delete functionality
