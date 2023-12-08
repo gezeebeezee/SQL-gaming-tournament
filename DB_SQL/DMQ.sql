@@ -71,9 +71,36 @@ UPDATE Players SET name = :nameInput, username = :usernameInput, birthdate = :bi
 -- update Tournaments_has_Games information
 UPDATE Tournaments_has_Games SET gameID = :gameID_from_dropdown_Input WHERE tournamentID = :tournamentID_from_dropdown_Input;
 
+-- update Tournaments
+UPDATE Tournaments SET tournamentName = :tournamentInput, :location = :locationInput, startDate = :startDateInput, endDate = :endDateInput WHERE tournamentID = :tournamentID_from_dropdown_Input
+
+-- update Games
+UPDATE Games SET title = :titleInput, genre = :genreInput, platform = :platformInput WHERE gameID = :gameID_from_dropdown_Input
+
+-- update Teams
+UPDATE Teams SET teamName = :teamNameInput, location = :locationInput, sponsorID = :sponsorID_from_dropdown_Input, tournamentID = :tournamentID_from_dropdown_Input, description = :descriptionInput WHERE teamID = :teamID_from_dropdown_Input
+
+-- update Sponsors
+UPDATE Sponsors SET sponsorName = :sponsorNameInput, contactPerson = :contactPersonInput, contactEmail = :contactEmailInput WHERE sponsorID = :sponsorID_from_dropdown_Input
+ 
 ----- Delete -----
 -- delete a Player
 DELETE FROM Players WHERE playerID = :playerID_selected_from_browse_player_page;
+
+-- delete Tournament
+DELETE FROM Tournaments WHERE tournamentID = :tournamentID_from_dropdown_Input
+
+-- delete tournament-game
+DELETE FROM Tournaments_has_Games WHERE Tournaments_has_Games.gameID = :gameID_from_dropdown_Input AND Tournaments_has_Games.tournamentID = :tournamentID_from_dropdown_Input
+
+-- delete Game
+DELETE FROM Games WHERE gameID = :gameID_from_dropdown_Input
+
+-- delete Team
+DELETE FROM Teams WHERE teamID = :teamID_from_dropdown_Input
+
+-- delete Sponsor
+DELETE FROM Sponsors WHERE sponsorID = :sponsorID_from_dropdown_Input
 
 -- disassociate a Game from a Tournament
 DELETE FROM Tournaments_has_Games WHERE gameID = :gameID_selected_from_game_and_tournament_list AND tournamentID = :tournamentID_selected_from_game_and_tournament_list;
