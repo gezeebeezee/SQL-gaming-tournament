@@ -18,9 +18,9 @@ app = Flask(__name__)
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = ""
-app.config["MYSQL_PASSWORD"] = ""
-app.config["MYSQL_DB"] = ""
+app.config["MYSQL_USER"] = "cs340_vust"
+app.config["MYSQL_PASSWORD"] = "x62ZkepfILY7"
+app.config["MYSQL_DB"] = "cs340_vust"
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -28,11 +28,9 @@ mysql = MySQL(app)
 
 # Routes
 
-# have homepage route to /tournaments by default for convenience, 
-# generally this will be your home route with its own template
-@app.route('/')
+@app.route('/index')
 def home():
-    return redirect("/tournaments")
+    return render_template("home.j2")
 
 
 ####################################
