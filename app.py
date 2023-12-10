@@ -7,6 +7,7 @@ import os
 # Configuration
 
 app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static') 
 
 # database connection
 # Template:
@@ -27,9 +28,12 @@ mysql = MySQL(app)
 
 
 # Routes
-
 @app.route('/index')
 def home():
+    return render_template("home.j2")
+
+@app.route('/')
+def index():
     return render_template("home.j2")
 
 
