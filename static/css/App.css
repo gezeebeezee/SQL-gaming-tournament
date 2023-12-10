@@ -33,7 +33,7 @@
 /*  ----- Viewport ----- elements inherited by all remaining elements ----- */
 body {       /* Can alternatively define in html {} or :root {} */
   color:;
-  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 46, 110, 0.9);
   font-family: 'Martian Mono', monospace;
   font-size: 1em;
   margin: auto;
@@ -45,9 +45,10 @@ a {}
 a:link {padding-left: 3%;
         padding-right: 3%;
 }
-a:hover {color: whitesmoke}
+
 a:active {}
-a:visited {color: rgb(64, 63, 76, .7)}
+a:visited {color: rgba(245, 245, 245, 0.852)}
+a:hover {color: rgb(185, 221, 255)}
 
 /*  ----- Navigation ----- Override text links for navigation only.  */
 nav {text-align:center;
@@ -70,11 +71,12 @@ nav a {border: solid rgb(255, 255, 255) 4px;
 nav a:hover {color: whitesmoke}
 
 /*  ----- Page layout blocks -----  */
-header {text-align: center; border: none; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: rgb(0, 0, 0);
+head {text-align: center}
+header {text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px; background-color: rgba(0, 0, 0, 0.785);
         font-size: 1.4em; font-weight: bold; padding-bottom: .1%; color:ghostwhite}
 main {text-align: center;
       background-color: rgba(0, 46, 110, 0.9);
-      padding-bottom: 5%;
+      padding-bottom: 2%;
       border-style: solid;
       border-color: whitesmoke;
       border-radius: 10px;
@@ -144,10 +146,11 @@ ins {}
 /*  ----- Table ----- */
 table {
     border-collapse: collapse;
-    width: 25%;
+    width: 20%;
     margin: 0 auto;
     text-align: left;
     font-weight: bold;
+    
     }
   caption {
     font-family: 'Barlow', sans-serif;
@@ -159,7 +162,7 @@ table {
     background-color: #140D4F;
     color: white}
   thead {background-color: rgb(0, 54, 90);
-         font-size: 1em;
+         font-size: .8em;
          padding: 2%;
          color:ghostwhite;
         text-align: center;
@@ -171,10 +174,11 @@ table {
   tr {border: 2px solid black;}
     tr:nth-child(even) {      background-color: rgba(206, 204, 255, 0.8)
 }
-  th {border: 2px solid black}
+  th {border: 2px solid black;
+      min-width: 125px}
   td {border: 2px solid black;
-      padding: 2%;
-      min-width: 120px;
+      padding-left: 2%
+      min-width: 125px;
       background-color: rgba(125, 122, 188, .8);}
     td:nth-child(1) {}
   td.delete {text-align: center;
@@ -194,26 +198,65 @@ datalist {}
 form {}
 fieldset {margin: auto;
           background-color: rgba(132, 171, 225, 0.9);
-          max-width: 700px;
-          border-radius: 10px
+          max-width: max-content;
+          border-radius: 10px;
 
 }
-legend {font-size: 1.8em;
+legend {font-size: 1.4em;
         padding-top:%;
-        color: whitesmoke
+        color: whitesmoke;
+        text-align:center;
+        margin: auto
 }
-label {font-size: 1em;
+label {font-size: .8em;
        padding-top: 1%;
-       padding-bottom: 1%;
-       display: inline-block
+       padding-bottom: 0%;
+       display: inline-flex;
       
 }
-  button {padding: 5%;
+  button {font-size:.9em;
+          background-color: rgba(0, 0, 0, 0);
+          color:rgba(255, 255, 255, 0.699);
           border-style: solid;
           border-color: black;
           border: 10px;
-          font-weight: bold
+          font-weight: bold;
+          margin: auto;
+          text-align: center;
+          display: block
+
 }
+
+#edit {text-align: center;
+       margin: auto;
+       display: block;
+       padding: 3%
+
+}
+
+#edit-team {text-align: center;
+            margin: auto;
+            display: block;
+            padding: 3%;
+            max-width: 800px
+
+}
+
+#insertTeam {text-align: center;
+            margin: auto;
+            display: block;
+            padding: 2%;
+            max-width: 800px
+}
+
+#insertPlayer {text-align: center;
+              margin: auto;
+              display: block;
+              padding: 2%;
+              max-width: 800px
+            }
+
+#intro {color:whitesmoke; text-align: left; padding: 0 2% 0 2%}
   input {}
   output {}
   meter {}

@@ -14,23 +14,23 @@
     <title>Teams</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <meta name="robots" content="noindex,noarchive,nofollow" />
-    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/App.css') }}"> 
     <script src='main.js'></script>
 </head>
 
 <body>
-<main>
     <header>
-        <h1>Teams</h1>
+        <h1>TEAMS</h1>
     </header>
     <nav>
-        <a href="index"> Home</a>
-        <a href="tournaments"> Tournaments</a>
-        <a href ="games"> Games</a> 
-        <a href="teams"> Teams</a> 
-        <a href="players"> Players</a> 
-        <a href="sponsors"> Sponsors</a>
+        <a href="index">HOME</a>
+        <a href="tournaments">TOURNAMENTS</a>
+        <a href ="games">GAMES</a> 
+        <a href="teams">TEAMS</a> 
+        <a href="players">PLAYERS</a> 
+        <a href="sponsors">SPONSORS</a>
     </nav>
+<main>
     <h2>Browse Teams</h2>
     <table border =  "2" cellpadding = "5">
         <!-- Access data tuple passed from app.py --> 
@@ -68,7 +68,6 @@
     </table>
 
 <p>&nbsp;</p>
-
     <form id="insertTeam" action="/teams" method="POST">
         <legend><strong>Add Team</strong></legend>
         <fieldset class="'field">
