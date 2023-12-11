@@ -19,9 +19,9 @@ app = Flask(__name__, static_url_path='/static')
 
 # database connection info
 app.config["MYSQL_HOST"] = "classmysql.engr.oregonstate.edu"
-app.config["MYSQL_USER"] = "cs340_vust"
-app.config["MYSQL_PASSWORD"] = "x62ZkepfILY7"
-app.config["MYSQL_DB"] = "cs340_vust"
+app.config["MYSQL_USER"] = ""
+app.config["MYSQL_PASSWORD"] = ""
+app.config["MYSQL_DB"] = ""
 app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 
 mysql = MySQL(app)
@@ -243,7 +243,7 @@ def games():
         mysql.connection.commit()
 
         # redirect back to tournament page
-        return redirect("/tournaments")
+        return redirect("/games")
 
     if request.method == "GET":
         # mySQL query to grab all the games
