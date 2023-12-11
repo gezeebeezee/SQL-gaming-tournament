@@ -1,9 +1,7 @@
 -- Group 73 Project Step 3
 -- Steven Vu and Kevin Le
 
---
--- Database: `cs340_vust`
--- Database: 'cs340_lekevinp
+-- Data Manipulation Queries used for web app backend
 --
 
 

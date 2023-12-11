@@ -1,8 +1,8 @@
 -- Group 73 Project Step 2
 -- Steven Vu and Kevin Le
 
---
---
+-- Data Definition Queries for CS340 Portfolio Project
+-- Importable onto database server
 
 -- --------------------------------------------------------
 SET FOREIGN_KEY_CHECKS = 0;
